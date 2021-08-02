@@ -19,10 +19,19 @@ public class ConfigInfoService {
     private ConfigInfoDao configInfoDao;
 
     /**
-     * 查询环境列表
+     * 查询配置列表
      */
-    public List<ConfigInfoDO> findListByProjectId(Integer projectId){
+    public List<ConfigInfoDO> findListByProjectId(Integer projectId) {
         return configInfoDao.findListByProjectId(projectId);
+    }
+
+    /**
+     *
+     * @param configId
+     * @return
+     */
+    public ConfigInfoDO findById(Integer configId) {
+        return configInfoDao.selectByPrimaryKey(configId);
     }
 
 }

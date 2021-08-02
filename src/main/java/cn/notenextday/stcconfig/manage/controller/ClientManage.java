@@ -19,8 +19,8 @@ public class ClientManage {
      * @return
      */
     public ConfigDTO splitForConfigDTO(String path) {
-        path.replace("/stcconfig/env", ""); // envId/project/projectId/configId
-        path.replace("/project", ""); // envId/projectId/configId
+        path = path.replace("/stcconfig/env", ""); // envId/project/projectId/configId
+        path = path.replace("/project", ""); // envId/projectId/configId
         String[] idArray = path.split("/");
         Integer envId = TypeUtil.stringToInt(idArray[0]);
         Integer projectId = TypeUtil.stringToInt(idArray[1]);

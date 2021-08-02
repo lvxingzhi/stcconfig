@@ -22,8 +22,9 @@ class StcconfigApplicationTests {
     }
 
     @Test
-    void registerTest(){
+    void registerTest() throws InterruptedException {
         stcconfigRegisterZkManage.init();
+        Thread.sleep(10000000000L);
     }
 
 
