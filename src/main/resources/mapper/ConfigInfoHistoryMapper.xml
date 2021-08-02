@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.notenextday.stcconfig.dao.ConfigInfoHistoryDao" >
+  <resultMap id="BaseResultMap" type="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="config_type" property="configType" jdbcType="VARCHAR" />
+    <result column="config_file_name" property="configFileName" jdbcType="VARCHAR" />
+    <result column="config_file_type" property="configFileType" jdbcType="VARCHAR" />
+    <result column="config_file_version" property="configFileVersion" jdbcType="VARCHAR" />
+    <result column="config_file_version_previous" property="configFileVersionPrevious" jdbcType="VARCHAR" />
+    <result column="config_file_version_next" property="configFileVersionNext" jdbcType="VARCHAR" />
+    <result column="config_index" property="configIndex" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" extends="BaseResultMap" >
+    <result column="config_file_content" property="configFileContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, config_type, config_file_name, config_file_type, config_file_version, config_file_version_previous, 
+    config_file_version_next, config_index, project_id, delete_flag, create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    config_file_content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from config_info_history
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+    insert into config_info_history (id, config_type, config_file_name, 
+      config_file_type, config_file_version, config_file_version_previous, 
+      config_file_version_next, config_index, project_id, delete_flag,
+      create_time, update_time, config_file_content
+      )
+    values (#{id,jdbcType=INTEGER}, #{configType,jdbcType=VARCHAR}, #{configFileName,jdbcType=VARCHAR}, 
+      #{configFileType,jdbcType=VARCHAR}, #{configFileVersion,jdbcType=VARCHAR}, #{configFileVersionPrevious,jdbcType=VARCHAR}, 
+      #{configFileVersionNext,jdbcType=VARCHAR}, #{configIndex,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{deleteFlag,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{configFileContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+    insert into config_info_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="configType != null" >
+        config_type,
+      </if>
+      <if test="configFileName != null" >
+        config_file_name,
+      </if>
+      <if test="configFileType != null" >
+        config_file_type,
+      </if>
+      <if test="configFileVersion != null" >
+        config_file_version,
+      </if>
+      <if test="configFileVersionPrevious != null" >
+        config_file_version_previous,
+      </if>
+      <if test="configFileVersionNext != null" >
+        config_file_version_next,
+      </if>
+      <if test="configIndex != null" >
+        config_index,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="deleteFlag != null" >
+        delete_flag,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="configFileContent != null" >
+        config_file_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="configType != null" >
+        #{configType,jdbcType=VARCHAR},
+      </if>
+      <if test="configFileName != null" >
+        #{configFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="configFileType != null" >
+        #{configFileType,jdbcType=VARCHAR},
+      </if>
+      <if test="configFileVersion != null" >
+        #{configFileVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="configFileVersionPrevious != null" >
+        #{configFileVersionPrevious,jdbcType=VARCHAR},
+      </if>
+      <if test="configFileVersionNext != null" >
+        #{configFileVersionNext,jdbcType=VARCHAR},
+      </if>
+      <if test="configIndex != null" >
+        #{configIndex,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="deleteFlag != null" >
+        #{deleteFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="configFileContent != null" >
+        #{configFileContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+    update config_info_history
+    <set >
+      <if test="configType != null" >
+        config_type = #{configType,jdbcType=VARCHAR},
+      </if>
+      <if test="configFileName != null" >
+        config_file_name = #{configFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="configFileType != null" >
+        config_file_type = #{configFileType,jdbcType=VARCHAR},
+      </if>
+      <if test="configFileVersion != null" >
+        config_file_version = #{configFileVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="configFileVersionPrevious != null" >
+        config_file_version_previous = #{configFileVersionPrevious,jdbcType=VARCHAR},
+      </if>
+      <if test="configFileVersionNext != null" >
+        config_file_version_next = #{configFileVersionNext,jdbcType=VARCHAR},
+      </if>
+      <if test="configIndex != null" >
+        config_index = #{configIndex,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="deleteFlag != null" >
+        delete_flag = #{deleteFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="configFileContent != null" >
+        config_file_content = #{configFileContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+    update config_info_history
+    set config_type = #{configType,jdbcType=VARCHAR},
+      config_file_name = #{configFileName,jdbcType=VARCHAR},
+      config_file_type = #{configFileType,jdbcType=VARCHAR},
+      config_file_version = #{configFileVersion,jdbcType=VARCHAR},
+      config_file_version_previous = #{configFileVersionPrevious,jdbcType=VARCHAR},
+      config_file_version_next = #{configFileVersionNext,jdbcType=VARCHAR},
+      config_index = #{configIndex,jdbcType=INTEGER},
+      project_id = #{projectId,jdbcType=INTEGER},
+      delete_flag = #{deleteFlag,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      config_file_content = #{configFileContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+    update config_info_history
+    set config_type = #{configType,jdbcType=VARCHAR},
+      config_file_name = #{configFileName,jdbcType=VARCHAR},
+      config_file_type = #{configFileType,jdbcType=VARCHAR},
+      config_file_version = #{configFileVersion,jdbcType=VARCHAR},
+      config_file_version_previous = #{configFileVersionPrevious,jdbcType=VARCHAR},
+      config_file_version_next = #{configFileVersionNext,jdbcType=VARCHAR},
+      config_index = #{configIndex,jdbcType=INTEGER},
+      project_id = #{projectId,jdbcType=INTEGER},
+      delete_flag = #{deleteFlag,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
