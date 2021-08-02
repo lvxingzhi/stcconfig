@@ -1,8 +1,11 @@
-package cn.notenextday.stcconfig.dto;
+package cn.notenextday.stcconfig.dto.entity;
 
 import java.util.Date;
 
-public class EnvInfoDO {
+/**
+ * 用户表实体
+ */
+public class UserInfoDO {
     /**
      * ID
      * 表字段: id
@@ -10,10 +13,16 @@ public class EnvInfoDO {
     private Integer id;
 
     /**
-     * 环境名称
-     * 表字段: env_name
+     * 账户名
+     * 表字段: account_name
      */
-    private String envName;
+    private String accountName;
+
+    /**
+     * 账户密码
+     * 表字段: account_password
+     */
+    private String accountPassword;
 
     /**
      * 0 有效 1 失效
@@ -41,12 +50,20 @@ public class EnvInfoDO {
         this.id = id;
     }
 
-    public String getEnvName() {
-        return envName;
+    public String getAccountName() {
+        return accountName;
     }
 
-    public void setEnvName(String envName) {
-        this.envName = envName;
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getAccountPassword() {
+        return accountPassword;
+    }
+
+    public void setAccountPassword(String accountPassword) {
+        this.accountPassword = accountPassword;
     }
 
     public Integer getDeleteFlag() {

@@ -1,11 +1,11 @@
-package cn.notenextday.stcconfig.dto;
+package cn.notenextday.stcconfig.dto.entity;
 
 import java.util.Date;
 
 /**
- * 配置历史表
+ * 配置表
  */
-public class ConfigInfoHistoryDO {
+public class ConfigInfoDO {
     /**
      * ID
      * 表字段: id
@@ -41,12 +41,6 @@ public class ConfigInfoHistoryDO {
      * 表字段: config_file_version_previous
      */
     private String configFileVersionPrevious;
-
-    /**
-     * 配置文件下一版本号
-     * 表字段: config_file_version_next
-     */
-    private String configFileVersionNext;
 
     /**
      * 配置文件次序
@@ -132,12 +126,12 @@ public class ConfigInfoHistoryDO {
         this.configFileVersionPrevious = configFileVersionPrevious;
     }
 
-    public String getConfigFileVersionNext() {
-        return configFileVersionNext;
+    public Integer getProjectId() {
+        return projectId;
     }
 
-    public void setConfigFileVersionNext(String configFileVersionNext) {
-        this.configFileVersionNext = configFileVersionNext;
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getConfigIndex() {
@@ -146,14 +140,6 @@ public class ConfigInfoHistoryDO {
 
     public void setConfigIndex(Integer configIndex) {
         this.configIndex = configIndex;
-    }
-
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
     }
 
     public Integer getDeleteFlag() {

@@ -1,8 +1,7 @@
 package cn.notenextday.stcconfig.dao;
 
-import cn.notenextday.stcconfig.dto.ProjectInfoDO;
+import cn.notenextday.stcconfig.dto.entity.ProjectInfoDO;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

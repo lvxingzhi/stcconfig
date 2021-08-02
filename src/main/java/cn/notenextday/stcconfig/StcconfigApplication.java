@@ -1,11 +1,7 @@
 package cn.notenextday.stcconfig;
 
-import cn.notenextday.stcconfig.manage.StcconfigRegisterZkManage;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import javax.annotation.Resource;
 
 /**
  * DO（ Data Object）：与数据库表结构一一对应，通过DAO层向上传输数据源对象。

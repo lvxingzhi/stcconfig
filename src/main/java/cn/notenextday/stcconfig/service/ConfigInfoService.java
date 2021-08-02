@@ -1,8 +1,7 @@
 package cn.notenextday.stcconfig.service;
 
 import cn.notenextday.stcconfig.dao.ConfigInfoDao;
-import cn.notenextday.stcconfig.dto.ConfigInfoDO;
-import cn.notenextday.stcconfig.dto.ProjectInfoDO;
+import cn.notenextday.stcconfig.dto.entity.ConfigInfoDO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

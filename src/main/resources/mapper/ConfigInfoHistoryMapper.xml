@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.notenextday.stcconfig.dao.ConfigInfoHistoryDao" >
-  <resultMap id="BaseResultMap" type="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+  <resultMap id="BaseResultMap" type="cn.notenextday.stcconfig.dto.entity.ConfigInfoHistoryDO" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="config_type" property="configType" jdbcType="VARCHAR" />
     <result column="config_file_name" property="configFileName" jdbcType="VARCHAR" />
@@ -15,7 +15,7 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="cn.notenextday.stcconfig.dto.entity.ConfigInfoHistoryDO" extends="BaseResultMap" >
     <result column="config_file_content" property="configFileContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -33,7 +33,7 @@
     from config_info_history
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <insert id="insert" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+  <insert id="insert" parameterType="cn.notenextday.stcconfig.dto.entity.ConfigInfoHistoryDO" >
     insert into config_info_history (id, config_type, config_file_name, 
       config_file_type, config_file_version, config_file_version_previous, 
       config_file_version_next, config_index, project_id, delete_flag,
@@ -45,7 +45,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{configFileContent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+  <insert id="insertSelective" parameterType="cn.notenextday.stcconfig.dto.entity.ConfigInfoHistoryDO" >
     insert into config_info_history
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -130,7 +130,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.notenextday.stcconfig.dto.entity.ConfigInfoHistoryDO" >
     update config_info_history
     <set >
       <if test="configType != null" >
@@ -172,7 +172,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.notenextday.stcconfig.dto.entity.ConfigInfoHistoryDO" >
     update config_info_history
     set config_type = #{configType,jdbcType=VARCHAR},
       config_file_name = #{configFileName,jdbcType=VARCHAR},
@@ -188,7 +188,7 @@
       config_file_content = #{configFileContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO" >
+  <update id="updateByPrimaryKey" parameterType="cn.notenextday.stcconfig.dto.entity.ConfigInfoHistoryDO" >
     update config_info_history
     set config_type = #{configType,jdbcType=VARCHAR},
       config_file_name = #{configFileName,jdbcType=VARCHAR},

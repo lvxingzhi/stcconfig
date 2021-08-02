@@ -1,11 +1,8 @@
-package cn.notenextday.stcconfig.dto;
+package cn.notenextday.stcconfig.dto.entity;
 
 import java.util.Date;
 
-/**
- * 项目表
- */
-public class ProjectInfoDO {
+public class EnvInfoDO {
     /**
      * ID
      * 表字段: id
@@ -13,16 +10,10 @@ public class ProjectInfoDO {
     private Integer id;
 
     /**
-     * 项目名称
-     * 表字段: project_name
+     * 环境名称
+     * 表字段: env_name
      */
-    private String projectName;
-
-    /**
-     * 环境ID
-     * 表字段: env_id
-     */
-    private Integer envId;
+    private String envName;
 
     /**
      * 0 有效 1 失效
@@ -50,20 +41,12 @@ public class ProjectInfoDO {
         this.id = id;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public String getEnvName() {
+        return envName;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public Integer getEnvId() {
-        return envId;
-    }
-
-    public void setEnvId(Integer envId) {
-        this.envId = envId;
+    public void setEnvName(String envName) {
+        this.envName = envName;
     }
 
     public Integer getDeleteFlag() {

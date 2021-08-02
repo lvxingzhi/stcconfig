@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.notenextday.stcconfig.dao.ConfigInfoDao" >
-  <resultMap id="BaseResultMap" type="cn.notenextday.stcconfig.dto.ConfigInfoDO" >
+  <resultMap id="BaseResultMap" type="cn.notenextday.stcconfig.dto.entity.ConfigInfoDO" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="config_type" property="configType" jdbcType="VARCHAR" />
     <result column="config_file_name" property="configFileName" jdbcType="VARCHAR" />
@@ -14,7 +14,7 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="cn.notenextday.stcconfig.dto.ConfigInfoDO" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="cn.notenextday.stcconfig.dto.entity.ConfigInfoDO" extends="BaseResultMap" >
     <result column="config_file_content" property="configFileContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -40,7 +40,7 @@
     from config_info
     where  project_id= #{projectId,jdbcType=INTEGER}
   </select>
-  <insert id="insert" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoDO" >
+  <insert id="insert" parameterType="cn.notenextday.stcconfig.dto.entity.ConfigInfoDO" >
     insert into config_info (id, config_type, config_file_name, 
       config_file_type, config_file_version, config_file_version_previous, 
       config_index, project_id, delete_flag, create_time,
@@ -50,7 +50,7 @@
       #{configIndex,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{deleteFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP}, #{configFileContent,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoDO" >
+  <insert id="insertSelective" parameterType="cn.notenextday.stcconfig.dto.entity.ConfigInfoDO" >
     insert into config_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -129,7 +129,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoDO" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.notenextday.stcconfig.dto.entity.ConfigInfoDO" >
     update config_info
     <set >
       <if test="configType != null" >
@@ -168,7 +168,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoDO" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.notenextday.stcconfig.dto.entity.ConfigInfoDO" >
     update config_info
     set config_type = #{configType,jdbcType=VARCHAR},
       config_file_name = #{configFileName,jdbcType=VARCHAR},
@@ -183,7 +183,7 @@
       config_file_content = #{configFileContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.notenextday.stcconfig.dto.ConfigInfoDO" >
+  <update id="updateByPrimaryKey" parameterType="cn.notenextday.stcconfig.dto.entity.ConfigInfoDO" >
     update config_info
     set config_type = #{configType,jdbcType=VARCHAR},
       config_file_name = #{configFileName,jdbcType=VARCHAR},

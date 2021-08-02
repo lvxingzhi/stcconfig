@@ -6,4 +6,24 @@ package cn.notenextday.stcconfig.dto.request;
  * @Date 2021/7/30 10:20
  */
 public class ClientGetConfigRequest {
+
+    /**
+     * 文件路径
+     */
+    private String path;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    @Override
+    public String toString() {
+        return "ClientGetConfigRequest{" +
+                "path='" + path + '\'' +
+                '}';
+    }
 }

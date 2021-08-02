@@ -1,8 +1,7 @@
 package cn.notenextday.stcconfig.dao;
 
-import cn.notenextday.stcconfig.dto.UserInfoDO;
+import cn.notenextday.stcconfig.dto.entity.UserInfoDO;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 @Mapper
 public interface UserInfoDao {

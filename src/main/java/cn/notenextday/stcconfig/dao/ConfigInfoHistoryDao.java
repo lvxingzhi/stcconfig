@@ -1,6 +1,6 @@
 package cn.notenextday.stcconfig.dao;
 
-import cn.notenextday.stcconfig.dto.ConfigInfoHistoryDO;
+import cn.notenextday.stcconfig.dto.entity.ConfigInfoHistoryDO;
 import org.apache.ibatis.annotations.Mapper;
 
 

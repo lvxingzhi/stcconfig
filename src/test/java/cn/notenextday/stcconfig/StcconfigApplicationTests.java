@@ -1,7 +1,7 @@
 package cn.notenextday.stcconfig;
 
 import cn.notenextday.stcconfig.dao.ConfigInfoDao;
-import cn.notenextday.stcconfig.manage.StcconfigRegisterZkManage;
+import cn.notenextday.stcconfig.manage.config.StcconfigRegisterZkManage;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

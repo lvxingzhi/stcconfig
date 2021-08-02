@@ -1,9 +1,9 @@
-package cn.notenextday.stcconfig.manage;
+package cn.notenextday.stcconfig.manage.config;
 
-import cn.notenextday.stcconfig.dto.ConfigInfoDO;
-import cn.notenextday.stcconfig.dto.EnvInfoDO;
+import cn.notenextday.stcconfig.dto.entity.ConfigInfoDO;
+import cn.notenextday.stcconfig.dto.entity.EnvInfoDO;
 import cn.notenextday.stcconfig.dto.NodeDTO;
-import cn.notenextday.stcconfig.dto.ProjectInfoDO;
+import cn.notenextday.stcconfig.dto.entity.ProjectInfoDO;
 import cn.notenextday.stcconfig.service.ConfigInfoService;
 import cn.notenextday.stcconfig.service.EnvInfoService;
 import cn.notenextday.stcconfig.service.ProjectInfoService;
