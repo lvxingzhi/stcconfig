@@ -98,7 +98,7 @@ public class StcconfigRegisterZkManage extends StcconfigRegisterManage {
                 for (NodeDTO zkConfigNodeDTO : zkConfigNodeList) {
                     if (CollectionUtils.isEmpty(getProConfigMap().get(Integer.parseInt(zkProNodeDTO.getData())).stream().filter(s -> s.getId().equals(Integer.parseInt(zkConfigNodeDTO.getData()))).collect(Collectors.toList()))) {
                         // 删除ZK配置
-                        ZookeeperClientUtil.deleteNode(zkProNodeDTO.getPath() + NodePathContant.PATH_SUB + zkConfigNodeDTO.getPath());
+                        ZookeeperClientUtil.deleteNode(zkConfigNodeDTO.getPath());
                     }
                 }
             }
