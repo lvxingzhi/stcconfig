@@ -1,0 +1,30 @@
+[stcconfig][2021-08-03 14:23:46.868][background-preinit][INFO][o.h.v.i.u.Version][<clinit>:21][] -
+                HV000001: Hibernate Validator 6.2.0.Final
+[stcconfig][2021-08-03 14:23:46.877][main][INFO][c.n.s.StcconfigServerApplication][logStarting:55][] -
+                Starting StcconfigServerApplication using Java 1.8.0_291 on LAPTOP-K141B4SL with PID 21124 (C:\work\workspace\stcconfig\stcconfig-server\target\classes started by 34902 in C:\work\workspace\stcconfig)
+[stcconfig][2021-08-03 14:23:46.878][main][INFO][c.n.s.StcconfigServerApplication][logStartupProfileInfo:659][] -
+                No active profile set, falling back to default profiles: default
+[stcconfig][2021-08-03 14:23:48.403][main][INFO][o.s.b.w.e.t.TomcatWebServer][initialize:108][] -
+                Tomcat initialized with port(s): 8080 (http)
+[stcconfig][2021-08-03 14:23:48.411][main][INFO][o.a.c.h.Http11NioProtocol][log:173][] -
+                Initializing ProtocolHandler ["http-nio-8080"]
+[stcconfig][2021-08-03 14:23:48.412][main][INFO][o.a.c.c.StandardService][log:173][] -
+                Starting service [Tomcat]
+[stcconfig][2021-08-03 14:23:48.412][main][INFO][o.a.c.c.StandardEngine][log:173][] -
+                Starting Servlet engine: [Apache Tomcat/9.0.50]
+[stcconfig][2021-08-03 14:23:48.561][main][INFO][o.a.c.c.C.[.[.[/]][log:173][] -
+                Initializing Spring embedded WebApplicationContext
+[stcconfig][2021-08-03 14:23:48.563][main][INFO][o.s.b.w.s.c.ServletWebServerApplicationContext][prepareWebApplicationContext:290][] -
+                Root WebApplicationContext: initialization completed in 1623 ms
+[stcconfig][2021-08-03 14:23:49.724][main][INFO][o.a.c.h.Http11NioProtocol][log:173][] -
+                Starting ProtocolHandler ["http-nio-8080"]
+[stcconfig][2021-08-03 14:23:49.736][main][INFO][o.s.b.w.e.t.TomcatWebServer][start:220][] -
+                Tomcat started on port(s): 8080 (http) with context path ''
+[stcconfig][2021-08-03 14:23:49.766][main][INFO][c.n.s.StcconfigServerApplication][logStarted:61][] -
+                Started StcconfigServerApplication in 3.381 seconds (JVM running for 4.599)
+[stcconfig][2021-08-03 14:24:53.625][http-nio-8080-exec-1][INFO][o.a.c.c.C.[.[.[/]][log:173][] -
+                Initializing Spring DispatcherServlet 'dispatcherServlet'
+[stcconfig][2021-08-03 14:24:53.625][http-nio-8080-exec-1][INFO][o.s.w.s.DispatcherServlet][initServletBean:525][] -
+                Initializing Servlet 'dispatcherServlet'
+[stcconfig][2021-08-03 14:24:53.626][http-nio-8080-exec-1][INFO][o.s.w.s.DispatcherServlet][initServletBean:547][] -
+                Completed initialization in 1 ms
