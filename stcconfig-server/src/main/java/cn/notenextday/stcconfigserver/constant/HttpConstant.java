@@ -7,4 +7,12 @@ package cn.notenextday.stcconfigserver.constant;
  */
 public class HttpConstant {
     public static final String HTTP_CONTENT_TYPE_UTF8 = "application/json;charset=utf-8";
+    public static final String URL_PREFIX = "http://";
+    public static final String URL_MIDDEL = ":";
+    public static final String URL_SUB = "/";
+    public static final String DOWN_FILE_URL = "/client/getConfigFile?path=";
+
+    public static String getUrl(String url, String port, String zkConfigNodePath) {
+        return URL_PREFIX + url + URL_MIDDEL + port + DOWN_FILE_URL + zkConfigNodePath;
+    }
 }

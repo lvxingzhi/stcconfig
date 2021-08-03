@@ -1,8 +1,9 @@
 package cn.notenextday.stcconfigserver.manage.config;
 
+import cn.notenextday.stcconfigserver.constant.HttpConstant;
 import cn.notenextday.stcconfigserver.constant.NodePathContant;
-import cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO;
 import cn.notenextday.stcconfigserver.dto.NodeDTO;
+import cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO;
 import cn.notenextday.stcconfigserver.dto.entity.ProjectInfoDO;
 import cn.notenextday.stcconfigserver.util.TypeUtil;
 import cn.notenextday.stcconfigserver.util.ZookeeperClientUtil;
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.apache.zookeeper.CreateMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
@@ -26,11 +28,15 @@ import java.util.stream.Collectors;
  * @Version 2.0
  * @Date 2021/7/28 11:29
  */
-@Repository
-public class StcconfigRegisterZkManage extends StcconfigRegisterManage {
+@Repository(value = "stcconfigRegisterManage")
+public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
     private static final Logger logger = LoggerFactory.getLogger(ZookeeperClientUtil.class);
     private static final String DEFAULT_VERSION = "0";
     private static final String ROOT_DATA = "{\"path\":\"/stcconfig\",\"data\":\"stcconfig\"}";
+    @Value("${stcconfig.server.url}")
+    private String stcconfigUrl;
+    @Value("${stcconfig.server.port}")
+    private String stcconfigPort;
 
     @Override
     public boolean checkAliveStatus() {
@@ -127,7 +133,7 @@ public class StcconfigRegisterZkManage extends StcconfigRegisterManage {
                     for (ConfigInfoDO dbConfigInfoDO : getProConfigMap().get(dbProjectInfoDO.getId())) {
                         // 创建ZK配置
                         String zkConfigNodePath = getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), dbConfigInfoDO.getId());
-                        ZookeeperClientUtil.createNode(zkConfigNodePath, JSONObject.toJSONBytes(new NodeDTO(zkConfigNodePath, dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion())), CreateMode.PERSISTENT);
+                        ZookeeperClientUtil.createNode(zkConfigNodePath, JSONObject.toJSONBytes(new NodeDTO(HttpConstant.getUrl(stcconfigUrl, stcconfigPort, zkConfigNodePath), dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion(), dbConfigInfoDO.getConfigFileName())), CreateMode.PERSISTENT);
                     }
                 } else {
                     List<NodeDTO> zkConfigNodeList = ZookeeperClientUtil.getChildrenNodes(getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), null));
@@ -135,7 +141,7 @@ public class StcconfigRegisterZkManage extends StcconfigRegisterManage {
                         if (CollectionUtils.isEmpty(zkConfigNodeList.stream().filter(s -> s.getData().equals(dbConfigInfoDO.getId())).collect(Collectors.toList()))) {
                             // 创建ZK配置
                             String zkConfigNodePath = getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), dbConfigInfoDO.getId());
-                            ZookeeperClientUtil.createNode(zkConfigNodePath, JSONObject.toJSONBytes(new NodeDTO(zkConfigNodePath, dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion())), CreateMode.PERSISTENT);
+                            ZookeeperClientUtil.createNode(zkConfigNodePath, JSONObject.toJSONBytes(new NodeDTO(HttpConstant.getUrl(stcconfigUrl, stcconfigPort, zkConfigNodePath), dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion(), dbConfigInfoDO.getConfigFileName())), CreateMode.PERSISTENT);
                         } else {
                             // 比较ZK配置
                             for (NodeDTO zkConfigNodeDTO : zkConfigNodeList) {

@@ -33,3 +33,5 @@ build/
 .vscode/
 /stcconfig-client/LOG_HOME_IS_UNDEFINED/stcconfig_all.log
 /stcconfig-client/LOG_HOME_IS_UNDEFINED/stcconfig_error.log
+/stcconfig-server/LOG_HOME_IS_UNDEFINED/stcconfig_all.log
+/stcconfig-server/LOG_HOME_IS_UNDEFINED/stcconfig_error.log

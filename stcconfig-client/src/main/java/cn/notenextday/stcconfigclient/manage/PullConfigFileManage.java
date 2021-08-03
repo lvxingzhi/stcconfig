@@ -5,6 +5,7 @@ import cn.notenextday.stcconfigclient.dto.NodeDTO;
 import cn.notenextday.stcconfigclient.util.ZookeeperClientUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.util.List;
 @Service
 public class PullConfigFileManage {
 
+    private String stcconfigFilePath = "c:/work/";
+
     /**
      * 从ZK获取配置路径列表
      */
@@ -27,10 +30,15 @@ public class PullConfigFileManage {
             return;
         }
         List<NodeDTO> nodeDTOList = ZookeeperClientUtil.getChildrenNodes(NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + envId + NodePathContant.PROJECT_PATH + NodePathContant.PATH_SUB + projectId);
-        // 请求HTTP请求, 获取配置文件
-        URL remoteUrl = new URL("http://localhost:8100/client/getConfigFile?path=/stcconfig/env/1/project/1/1");
-        File localTmpFile = new File("c:/work/ap.properties");
-        FileUtils.copyURLToFile(remoteUrl, localTmpFile);
+        if (CollectionUtils.isEmpty(nodeDTOList)) {
+            return;
+        }
+        for (NodeDTO nodeDTO : nodeDTOList) {
+            // 请求HTTP请求, 获取配置文件
+            URL remoteUrl = new URL(nodeDTO.getPath());
+            File localTmpFile = new File(stcconfigFilePath + nodeDTO.getFileName());
+            FileUtils.copyURLToFile(remoteUrl, localTmpFile);
+        }
     }
 
 }

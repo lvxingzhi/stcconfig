@@ -24,6 +24,12 @@ public class NodeDTO {
         setData("" + data);
     }
 
+    public NodeDTO(String path, Integer data, String version, String fileName) {
+        setPath(path);
+        setData("" + data);
+        setFileName(fileName);
+    }
+
     /**
      * 路径
      */
@@ -36,6 +42,10 @@ public class NodeDTO {
      * 版本
      */
     private String version;
+    /**
+     * 文件名
+     */
+    private String fileName;
     /**
      * 孩子节点集合
      */
@@ -73,12 +83,21 @@ public class NodeDTO {
         this.childrenNodeList = childrenNodeList;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     @Override
     public String toString() {
         return "NodeDTO{" +
                 "path='" + path + '\'' +
                 ", data='" + data + '\'' +
                 ", version='" + version + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", childrenNodeList=" + childrenNodeList +
                 '}';
     }
