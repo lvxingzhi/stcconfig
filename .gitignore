@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/stcconfig-client/LOG_HOME_IS_UNDEFINED/stcconfig_all.log
+/stcconfig-client/LOG_HOME_IS_UNDEFINED/stcconfig_error.log
