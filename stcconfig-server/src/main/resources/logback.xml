@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="APP_NAME" value="stcconfig"/>
+    <property name="APP_NAME" value="stcconfig-server"/>
+    <property name="LOG_HOME" value="logs"/>
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[${APP_NAME}][%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%-4level][%logger{15}][%M:%L][%X{traceId}] -
