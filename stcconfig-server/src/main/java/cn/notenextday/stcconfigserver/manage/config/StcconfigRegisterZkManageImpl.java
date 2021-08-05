@@ -31,13 +31,18 @@ import java.util.stream.Collectors;
 @Repository(value = "stcconfigRegisterManage")
 public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
     private static final Logger logger = LoggerFactory.getLogger(ZookeeperClientUtil.class);
-    private static final String DEFAULT_VERSION = "0";
+    private static final Integer DEFAULT_VERSION = 1;
     private static final String ROOT_DATA = "{\"path\":\"/stcconfig\",\"data\":\"stcconfig\"}";
     @Value("${stcconfig.server.url}")
     private String stcconfigUrl;
     @Value("${stcconfig.server.port}")
     private String stcconfigPort;
 
+    /**
+     * 检测zk存活状态
+     *
+     * @return
+     */
     @Override
     public boolean checkAliveStatus() {
         try {
@@ -49,6 +54,11 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
         return false;
     }
 
+    /**
+     * 获取根节点 [/stcconfig]
+     *
+     * @return
+     */
     @Override
     public NodeDTO getRootNode() {
         if (ZookeeperClientUtil.existsNode(NodePathContant.ROOT_PATH)) {
@@ -57,31 +67,88 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
         return null;
     }
 
+    /**
+     * 创建根节点 [/stcconfig]
+     *
+     * @return
+     */
     @Override
-    public boolean createRootNode() {
-        if (Objects.isNull(getRootNode())) {
-            ZookeeperClientUtil.createNode(NodePathContant.ROOT_PATH, ROOT_DATA.getBytes(StandardCharsets.UTF_8), CreateMode.PERSISTENT);
-            return true;
+    public void createRootNode() {
+        if (!Objects.isNull(getRootNode())) {
+            return;
         }
-        return false;
+        ZookeeperClientUtil.createNode(NodePathContant.ROOT_PATH, ROOT_DATA.getBytes(StandardCharsets.UTF_8), CreateMode.PERSISTENT);
     }
 
+    /**
+     * 创建配置树
+     *
+     * @return
+     */
     @Override
     public boolean buildNodes() {
         if (!checkAliveStatus()) {
+            logger.error("[zookeeper] zk状态未存活,检查zk运行状态");
             return false;
         }
-        if (Objects.isNull(getRootNode())) {
-            if (createRootNode()) {
-                return false;
-            }
+        // 1,创建根节点
+        createRootNode();
+        // 2,获取ENV节点列表
+        List<NodeDTO> zkEnvNodeList = getZkEnvNodeList();
+        // 3,删除ZK多余的节点[基于DB数据]
+        deleteZkNodeList(zkEnvNodeList);
+        // 4,创建ZK没有的节点[基于DB数据]
+        createZkNodeList(zkEnvNodeList);
+        return false;
+    }
+
+    /**
+     * 获取zk路径工具
+     */
+    private String getZkPathValue(String envName, String projectName, String configName) {
+        String path = "";
+        if (Strings.isEmpty(envName)) {
+            return NodePathContant.ENV_PATH_ALL;
         }
+        path = NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + envName;
+        if (Strings.isEmpty(projectName)) {
+            return path;
+        }
+        path = NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + envName + NodePathContant.PROJECT_PATH + NodePathContant.PATH_SUB + projectName;
+        if (Strings.isEmpty(configName)) {
+            return path;
+        }
+        path = NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + envName + NodePathContant.PROJECT_PATH + NodePathContant.PATH_SUB + projectName + NodePathContant.PATH_SUB + configName;
+        return path;
+
+    }
+
+    /**
+     * 获取zk路径工具
+     */
+    private String getZkPathValue(Integer envName, Integer projectName, Integer configName) {
+        return getZkPathValue(TypeUtil.intToString(envName), TypeUtil.intToString(projectName), TypeUtil.intToString(configName));
+    }
+
+    /**
+     * ENV节点列表
+     *
+     * @return
+     */
+    private List<NodeDTO> getZkEnvNodeList() {
         // 判断/env是否创建
         if (!ZookeeperClientUtil.existsNode(NodePathContant.ENV_PATH_ALL)) {
             ZookeeperClientUtil.createNode(NodePathContant.ENV_PATH_ALL, JSONObject.toJSONBytes(new NodeDTO("", "", DEFAULT_VERSION)), CreateMode.PERSISTENT);
         }
         // 获取ZK环境列表
         List<NodeDTO> zkEnvNodeList = ZookeeperClientUtil.getChildrenNodes(NodePathContant.ENV_PATH_ALL);
+        return zkEnvNodeList;
+    }
+
+    /**
+     * 删除ZK多余的节点[基于DB数据]
+     */
+    private void deleteZkNodeList(List<NodeDTO> zkEnvNodeList) {
         // 以ZK为基准对比DB, 没有则删除ZK, (没有配置版本对比)
         for (NodeDTO zkEnvNodeDTO : zkEnvNodeList) {
             if (!getEnvProjectMap().keySet().contains(Integer.parseInt(zkEnvNodeDTO.getData()))) {
@@ -111,6 +178,12 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
                 }
             }
         }
+    }
+
+    /**
+     * 创建ZK没有的节点[基于DB数据]
+     */
+    private void createZkNodeList(List<NodeDTO> zkEnvNodeList) {
         // 以DB为基准对比ZK, 没有则新增ZK, (配置版本对比更新)
         for (Integer dbEnvId : getEnvProjectMap().keySet()) {
             if (CollectionUtils.isEmpty(zkEnvNodeList.stream().filter(s -> s.getPath().endsWith(NodePathContant.PATH_SUB + dbEnvId)).collect(Collectors.toList()))) {
@@ -157,38 +230,20 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
                         }
                     }
                 }
+                // 项目版本更新, 客户端监听项目版本
+                NodeDTO nodeDTO = ZookeeperClientUtil.getNode(getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), null), null);
+                nodeDTO.setVersion(incrementVersion(nodeDTO.getVersion()));
             }
         }
-        return false;
     }
 
     /**
-     * 获取zk路径工具
+     * 自增版本号
+     *
+     * @return
      */
-    private String getZkPathValue(String envName, String projectName, String configName) {
-        String path = "";
-        if (Strings.isEmpty(envName)) {
-            return NodePathContant.ENV_PATH_ALL;
-        }
-        path = NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + envName;
-        if (Strings.isEmpty(projectName)) {
-            return path;
-        }
-        path = NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + envName + NodePathContant.PROJECT_PATH + NodePathContant.PATH_SUB + projectName;
-        if (Strings.isEmpty(configName)) {
-            return path;
-        }
-        path = NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + envName + NodePathContant.PROJECT_PATH + NodePathContant.PATH_SUB + projectName + NodePathContant.PATH_SUB + configName;
-        return path;
-
+    private Integer incrementVersion(Integer version) {
+        return version + 1;
     }
-
-    /**
-     * 获取zk路径工具
-     */
-    private String getZkPathValue(Integer envName, Integer projectName, Integer configName) {
-        return getZkPathValue(TypeUtil.intToString(envName), TypeUtil.intToString(projectName), TypeUtil.intToString(configName));
-    }
-
 
 }

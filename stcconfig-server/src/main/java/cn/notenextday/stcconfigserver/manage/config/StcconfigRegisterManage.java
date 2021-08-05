@@ -1,8 +1,8 @@
 package cn.notenextday.stcconfigserver.manage.config;
 
+import cn.notenextday.stcconfigserver.dto.NodeDTO;
 import cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO;
 import cn.notenextday.stcconfigserver.dto.entity.EnvInfoDO;
-import cn.notenextday.stcconfigserver.dto.NodeDTO;
 import cn.notenextday.stcconfigserver.dto.entity.ProjectInfoDO;
 import cn.notenextday.stcconfigserver.service.ConfigInfoService;
 import cn.notenextday.stcconfigserver.service.EnvInfoService;
@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 管理器定义
@@ -41,18 +40,15 @@ public abstract class StcconfigRegisterManage {
     private Map<Integer, List<ConfigInfoDO>> proConfigMap = new HashMap<>();
 
     public void init() {
-        NodeDTO nodeDTO = getRootNode();
-        if (Objects.isNull(nodeDTO)) {
-            // 创建RootNode
-            createRootNode();
-        }
+        // 创建RootNode
+        createRootNode();
         // 查询环境
         List<EnvInfoDO> envInfoDOList = envInfoService.selectAll();
         if (CollectionUtils.isEmpty(envInfoDOList)) {
-            logger.warn("[stcconfig配置初始化] 环境未配置");
+            logger.warn("[stcconfig配置初始化] DB环境未配置");
             return;
         }
-        // 查询项目
+        // 查询DB项目
         for (EnvInfoDO envInfoDO : envInfoDOList) {
             List<ProjectInfoDO> projectInfoDOList = projectInfoService.findListByEnvId(envInfoDO.getId());
             if (CollectionUtils.isEmpty(projectInfoDOList)) {
@@ -60,15 +56,13 @@ public abstract class StcconfigRegisterManage {
             }
             envProjectMap.put(envInfoDO.getId(), projectInfoDOList);
             for (ProjectInfoDO projectInfoDO : projectInfoDOList) {
-                // 查询数据库配置文件
+                // 查询DB配置
                 List<ConfigInfoDO> configInfoDOList = configInfoService.findListByProjectId(projectInfoDO.getId());
-                if(!CollectionUtils.isEmpty(configInfoDOList)){
+                if (!CollectionUtils.isEmpty(configInfoDOList)) {
                     proConfigMap.put(projectInfoDO.getId(), configInfoDOList);
                 }
             }
-        }
-        // 扫描zk目录, 删除不存在的节点, 对比版本号更新/插入
-        checkAliveStatus();
+        }// 构建节点树
         buildNodes();
     }
 
@@ -91,10 +85,11 @@ public abstract class StcconfigRegisterManage {
      *
      * @return
      */
-    public abstract boolean createRootNode();
+    public abstract void createRootNode();
 
     /**
      * 构建节点信息
+     *
      * @return
      */
     public abstract boolean buildNodes();

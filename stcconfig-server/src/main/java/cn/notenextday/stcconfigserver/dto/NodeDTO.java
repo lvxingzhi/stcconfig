@@ -14,17 +14,17 @@ public class NodeDTO {
     public NodeDTO() {
     }
 
-    public NodeDTO(String path, String data, String version) {
+    public NodeDTO(String path, String data, Integer version) {
         setPath(path);
         setData(data);
     }
 
-    public NodeDTO(String path, Integer data, String version) {
+    public NodeDTO(String path, Integer data, Integer version) {
         setPath(path);
         setData("" + data);
     }
 
-    public NodeDTO(String path, Integer data, String version, String fileName) {
+    public NodeDTO(String path, Integer data, Integer version, String fileName) {
         setPath(path);
         setData("" + data);
         setFileName(fileName);
@@ -41,7 +41,7 @@ public class NodeDTO {
     /**
      * 版本
      */
-    private String version;
+    private Integer version;
     /**
      * 文件名
      */
@@ -67,11 +67,11 @@ public class NodeDTO {
         this.data = data;
     }
 
-    public String getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 

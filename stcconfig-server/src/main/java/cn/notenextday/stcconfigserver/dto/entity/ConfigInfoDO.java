@@ -34,13 +34,13 @@ public class ConfigInfoDO {
      * 配置文件版本号
      * 表字段: config_file_version
      */
-    private String configFileVersion;
+    private Integer configFileVersion;
 
     /**
      * 配置文件上一版本号
      * 表字段: config_file_version_previous
      */
-    private String configFileVersionPrevious;
+    private Integer configFileVersionPrevious;
 
     /**
      * 配置文件次序
@@ -110,19 +110,19 @@ public class ConfigInfoDO {
         this.configFileType = configFileType;
     }
 
-    public String getConfigFileVersion() {
+    public Integer getConfigFileVersion() {
         return configFileVersion;
     }
 
-    public void setConfigFileVersion(String configFileVersion) {
+    public void setConfigFileVersion(Integer configFileVersion) {
         this.configFileVersion = configFileVersion;
     }
 
-    public String getConfigFileVersionPrevious() {
+    public Integer getConfigFileVersionPrevious() {
         return configFileVersionPrevious;
     }
 
-    public void setConfigFileVersionPrevious(String configFileVersionPrevious) {
+    public void setConfigFileVersionPrevious(Integer configFileVersionPrevious) {
         this.configFileVersionPrevious = configFileVersionPrevious;
     }
 

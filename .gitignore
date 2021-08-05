@@ -37,3 +37,5 @@ build/
 /stcconfig-server/LOG_HOME_IS_UNDEFINED/stcconfig_error.log
 /stcconfig-client/src/main/resources/stcconfig/
 /logs/
+/stcconfig-client/logs/
+/stcconfig-server/logs/

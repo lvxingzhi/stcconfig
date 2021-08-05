@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 @SpringBootTest
 class StcconfigClientApplicationTests {
@@ -14,7 +15,9 @@ class StcconfigClientApplicationTests {
     private PullConfigFileManage pullConfigFileManage;
 
     @Test
-    void pullFileTest() throws IOException {
-        pullConfigFileManage.pullConfigFile(1, 1);
+    void pullFileTest() throws IOException, InterruptedException {
+        pullConfigFileManage.init();
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        countDownLatch.await();
     }
 }

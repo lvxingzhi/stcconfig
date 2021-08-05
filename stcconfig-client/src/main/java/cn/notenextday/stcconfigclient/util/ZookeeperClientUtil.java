@@ -5,7 +5,6 @@ import cn.notenextday.stcconfigclient.dto.NodeDTO;
 import cn.notenextday.stcconfigclient.watcher.ConnectedWatcher;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
@@ -45,13 +44,13 @@ public class ZookeeperClientUtil {
      */
     public static void createNode(String path, byte[] data, CreateMode createMode) {
         try {
-            if (existsNode(path)) {
+            if (existsNode(path, null)) {
                 return;
             }
             waitUntilConnected(zookeeper);
             zookeeper.create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, createMode);
         } catch (Exception e) {
-            logger.error("[zookeeper] 创建节点异常", e);
+            logger.error("[zookeeper] 创建节点异常,{}", e);
         }
     }
 
@@ -63,7 +62,7 @@ public class ZookeeperClientUtil {
             waitUntilConnected(zookeeper);
             zookeeper.setData(path, data, zookeeper.exists(path, false).getVersion());
         } catch (Exception e) {
-            logger.error("[zookeeper] 修改节点异常", e);
+            logger.error("[zookeeper] 修改节点异常,{}", e);
         }
     }
 
@@ -80,7 +79,7 @@ public class ZookeeperClientUtil {
             String dataStr = new String(dataByte, "UTF-8");
             return JSONObject.parseObject(dataStr, NodeDTO.class);
         } catch (Exception e) {
-            logger.error("[zookeeper] 获取节点异常", e);
+            logger.error("[zookeeper] 获取节点异常,{}", e);
         }
         return null;
     }
@@ -98,7 +97,7 @@ public class ZookeeperClientUtil {
                 resultNodeList.add(childNode);
             }
         } catch (Exception e) {
-            logger.error("[zookeeper] 获取子节点列表异常", e);
+            logger.error("[zookeeper] 获取子节点列表异常,{}", e);
         }
         return resultNodeList;
     }
@@ -111,19 +110,19 @@ public class ZookeeperClientUtil {
             waitUntilConnected(zookeeper);
             zookeeper.delete(path, zookeeper.exists(path, false).getVersion());
         } catch (Exception e) {
-            logger.error("[zookeeper] 删除节点异常", e);
+            logger.error("[zookeeper] 删除节点异常,{}", e);
         }
     }
 
     /**
      * 检查节点
      */
-    public static boolean existsNode(String path) {
+    public static boolean existsNode(String path, Watcher watcher) {
         try {
             waitUntilConnected(zookeeper);
-            return Objects.nonNull(zookeeper.exists(path, false));
+            return Objects.nonNull(zookeeper.exists(path, watcher));
         } catch (Exception e) {
-            logger.error("[zookeeper] 检查节点异常", e);
+            logger.error("[zookeeper] 检查节点异常,{}", e);
         }
         return false;
     }
@@ -136,18 +135,15 @@ public class ZookeeperClientUtil {
             if (Objects.nonNull(zookeeper) && zookeeper.getState().isAlive()) {
                 return;
             }
-            zookeeper = new ZooKeeper("127.0.0.1:2181", 155000, new Watcher() {
-                @Override
-                public void process(WatchedEvent watchedEvent) {
-                    // 监听节点事件, 监听连接事件
-                    if (Event.KeeperState.SyncConnected.equals(watchedEvent.getState())) {
-                        logger.info("服务连接成功");
-                    }
+            zookeeper = new ZooKeeper("127.0.0.1:2181", 155000, watchedEvent -> {
+                // 监听节点事件, 监听连接事件
+                if (Watcher.Event.KeeperState.SyncConnected.equals(watchedEvent.getState())) {
+                    logger.info("[zookeeper] 服务连接成功");
                 }
             });
         } catch (IOException e) {
             e.printStackTrace();
-            logger.error("[zookeeper] 初始化异常", e);
+            logger.error("[zookeeper] 初始化异常{}", e);
         }
     }
 
@@ -159,14 +155,22 @@ public class ZookeeperClientUtil {
         zookeeper.close();
     }
 
+    /**
+     * 检查连接状态
+     *
+     * @param zooKeeper
+     */
     public static void waitUntilConnected(ZooKeeper zooKeeper) {
         CountDownLatch connectedLatch = new CountDownLatch(1);
         Watcher watcher = new ConnectedWatcher(connectedLatch);
+        // 注册监听
         zooKeeper.register(watcher);
         if (ZooKeeper.States.CONNECTING == zooKeeper.getState()) {
             try {
+                // 阻塞, 等待事件触发后的激活以继续执行
                 connectedLatch.await();
             } catch (InterruptedException e) {
+                logger.error("[zookeeper] 等待连接中异常,{}", e);
                 throw new IllegalStateException(e);
             }
         }

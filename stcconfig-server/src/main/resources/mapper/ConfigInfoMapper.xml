@@ -6,8 +6,8 @@
     <result column="config_type" property="configType" jdbcType="VARCHAR" />
     <result column="config_file_name" property="configFileName" jdbcType="VARCHAR" />
     <result column="config_file_type" property="configFileType" jdbcType="VARCHAR" />
-    <result column="config_file_version" property="configFileVersion" jdbcType="VARCHAR" />
-    <result column="config_file_version_previous" property="configFileVersionPrevious" jdbcType="VARCHAR" />
+    <result column="config_file_version" property="configFileVersion" jdbcType="INTEGER" />
+    <result column="config_file_version_previous" property="configFileVersionPrevious" jdbcType="INTEGER" />
     <result column="config_index" property="configIndex" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
@@ -46,7 +46,7 @@
       config_index, project_id, delete_flag, create_time,
       update_time, config_file_content)
     values (#{id,jdbcType=INTEGER}, #{configType,jdbcType=VARCHAR}, #{configFileName,jdbcType=VARCHAR}, 
-      #{configFileType,jdbcType=VARCHAR}, #{configFileVersion,jdbcType=VARCHAR}, #{configFileVersionPrevious,jdbcType=VARCHAR}, 
+      #{configFileType,jdbcType=VARCHAR}, #{configFileVersion,jdbcType=INTEGER}, #{configFileVersionPrevious,jdbcType=INTEGER},
       #{configIndex,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{deleteFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP}, #{configFileContent,jdbcType=LONGVARCHAR})
   </insert>
@@ -104,10 +104,10 @@
         #{configFileType,jdbcType=VARCHAR},
       </if>
       <if test="configFileVersion != null" >
-        #{configFileVersion,jdbcType=VARCHAR},
+        #{configFileVersion,jdbcType=INTEGER},
       </if>
       <if test="configFileVersionPrevious != null" >
-        #{configFileVersionPrevious,jdbcType=VARCHAR},
+        #{configFileVersionPrevious,jdbcType=INTEGER},
       </if>
       <if test="configIndex != null" >
         #{configIndex,jdbcType=INTEGER},
@@ -142,10 +142,10 @@
         config_file_type = #{configFileType,jdbcType=VARCHAR},
       </if>
       <if test="configFileVersion != null" >
-        config_file_version = #{configFileVersion,jdbcType=VARCHAR},
+        config_file_version = #{configFileVersion,jdbcType=INTEGER},
       </if>
       <if test="configFileVersionPrevious != null" >
-        config_file_version_previous = #{configFileVersionPrevious,jdbcType=VARCHAR},
+        config_file_version_previous = #{configFileVersionPrevious,jdbcType=INTEGER},
       </if>
       <if test="configIndex != null" >
         config_index = #{configIndex,jdbcType=INTEGER},
@@ -173,8 +173,8 @@
     set config_type = #{configType,jdbcType=VARCHAR},
       config_file_name = #{configFileName,jdbcType=VARCHAR},
       config_file_type = #{configFileType,jdbcType=VARCHAR},
-      config_file_version = #{configFileVersion,jdbcType=VARCHAR},
-      config_file_version_previous = #{configFileVersionPrevious,jdbcType=VARCHAR},
+      config_file_version = #{configFileVersion,jdbcType=INTEGER},
+      config_file_version_previous = #{configFileVersionPrevious,jdbcType=INTEGER},
       config_index = #{configIndex,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
       delete_flag = #{deleteFlag,jdbcType=INTEGER},
@@ -188,8 +188,8 @@
     set config_type = #{configType,jdbcType=VARCHAR},
       config_file_name = #{configFileName,jdbcType=VARCHAR},
       config_file_type = #{configFileType,jdbcType=VARCHAR},
-      config_file_version = #{configFileVersion,jdbcType=VARCHAR},
-      config_file_version_previous = #{configFileVersionPrevious,jdbcType=VARCHAR},
+      config_file_version = #{configFileVersion,jdbcType=INTEGER},
+      config_file_version_previous = #{configFileVersionPrevious,jdbcType=INTEGER},
       config_index = #{configIndex,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
       delete_flag = #{deleteFlag,jdbcType=INTEGER},
