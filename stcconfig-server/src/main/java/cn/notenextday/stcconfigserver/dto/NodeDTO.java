@@ -12,22 +12,26 @@ import java.util.List;
 public class NodeDTO {
 
     public NodeDTO() {
+        // do nothing
     }
 
     public NodeDTO(String path, String data, Integer version) {
         setPath(path);
         setData(data);
+        setVersion(version);
     }
 
     public NodeDTO(String path, Integer data, Integer version) {
         setPath(path);
         setData("" + data);
+        setVersion(version);
     }
 
     public NodeDTO(String path, Integer data, Integer version, String fileName) {
         setPath(path);
         setData("" + data);
         setFileName(fileName);
+        setVersion(version);
     }
 
     /**

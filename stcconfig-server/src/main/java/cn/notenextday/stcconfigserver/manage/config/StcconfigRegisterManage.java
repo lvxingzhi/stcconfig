@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +31,6 @@ public abstract class StcconfigRegisterManage {
     private ProjectInfoService projectInfoService;
     @Resource
     private ConfigInfoService configInfoService;
-    // 环境列表
-    private List<NodeDTO> nodeDTOList = new ArrayList<>();
     // 环境-项目
     private Map<Integer, List<ProjectInfoDO>> envProjectMap = new HashMap<>();
     // 项目-文件
@@ -92,7 +89,7 @@ public abstract class StcconfigRegisterManage {
      *
      * @return
      */
-    public abstract boolean buildNodes();
+    public abstract void buildNodes();
 
     public Map<Integer, List<ProjectInfoDO>> getEnvProjectMap() {
         return envProjectMap;

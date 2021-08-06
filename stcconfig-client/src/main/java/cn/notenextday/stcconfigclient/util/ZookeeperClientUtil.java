@@ -4,7 +4,6 @@ import cn.notenextday.stcconfigclient.constant.NodePathContant;
 import cn.notenextday.stcconfigclient.dto.NodeDTO;
 import cn.notenextday.stcconfigclient.watcher.ConnectedWatcher;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooDefs;
@@ -13,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,7 +34,9 @@ import java.util.concurrent.CountDownLatch;
  */
 public class ZookeeperClientUtil {
 
-    private ZookeeperClientUtil(){}
+    private ZookeeperClientUtil() {
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(ZookeeperClientUtil.class);
     private static ZooKeeper zookeeper = null;
 
@@ -79,7 +81,7 @@ public class ZookeeperClientUtil {
             if (dataByte == null) {
                 return null;
             }
-            String dataStr = new String(dataByte, "UTF-8");
+            String dataStr = new String(dataByte, StandardCharsets.UTF_8);
             return JSON.parseObject(dataStr, NodeDTO.class);
         } catch (Exception e) {
             logger.error("[zookeeper] 获取节点异常", e);

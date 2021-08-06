@@ -7,7 +7,7 @@ import cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO;
 import cn.notenextday.stcconfigserver.dto.entity.ProjectInfoDO;
 import cn.notenextday.stcconfigserver.util.TypeUtil;
 import cn.notenextday.stcconfigserver.util.ZookeeperClientUtil;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
 import org.apache.logging.log4j.util.Strings;
 import org.apache.zookeeper.CreateMode;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  */
 @Repository(value = "stcconfigRegisterManage")
 public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
-    private static final Logger logger = LoggerFactory.getLogger(ZookeeperClientUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(StcconfigRegisterZkManageImpl.class);
     private static final Integer DEFAULT_VERSION = 1;
     private static final String ROOT_DATA = "{\"path\":\"/stcconfig\",\"data\":\"stcconfig\"}";
     @Value("${stcconfig.server.url}")
@@ -49,7 +49,7 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
             ZookeeperClientUtil.getNode(NodePathContant.ROOT_PATH, null);
             return true;
         } catch (Exception e) {
-            logger.error("[zookeeper] 检查存活状态异常{}", e);
+            logger.error("[zookeeper] 检查存活状态异常", e);
         }
         return false;
     }
@@ -86,10 +86,10 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
      * @return
      */
     @Override
-    public boolean buildNodes() {
+    public void buildNodes() {
         if (!checkAliveStatus()) {
             logger.error("[zookeeper] zk状态未存活,检查zk运行状态");
-            return false;
+            return;
         }
         // 1,创建根节点
         createRootNode();
@@ -99,7 +99,6 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
         deleteZkNodeList(zkEnvNodeList);
         // 4,创建ZK没有的节点[基于DB数据]
         createZkNodeList(zkEnvNodeList);
-        return false;
     }
 
     /**
@@ -138,11 +137,10 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
     private List<NodeDTO> getZkEnvNodeList() {
         // 判断/env是否创建
         if (!ZookeeperClientUtil.existsNode(NodePathContant.ENV_PATH_ALL)) {
-            ZookeeperClientUtil.createNode(NodePathContant.ENV_PATH_ALL, JSONObject.toJSONBytes(new NodeDTO("", "", DEFAULT_VERSION)), CreateMode.PERSISTENT);
+            ZookeeperClientUtil.createNode(NodePathContant.ENV_PATH_ALL, JSON.toJSONBytes(new NodeDTO("", "", DEFAULT_VERSION)), CreateMode.PERSISTENT);
         }
         // 获取ZK环境列表
-        List<NodeDTO> zkEnvNodeList = ZookeeperClientUtil.getChildrenNodes(NodePathContant.ENV_PATH_ALL);
-        return zkEnvNodeList;
+        return ZookeeperClientUtil.getChildrenNodes(NodePathContant.ENV_PATH_ALL);
     }
 
     /**
@@ -158,7 +156,7 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
 
             // 判断/project是否创建
             if (!ZookeeperClientUtil.existsNode(zkEnvNodeDTO.getPath() + NodePathContant.PROJECT_PATH)) {
-                ZookeeperClientUtil.createNode(zkEnvNodeDTO.getPath() + NodePathContant.PROJECT_PATH, JSONObject.toJSONBytes(new NodeDTO(zkEnvNodeDTO.getPath() + NodePathContant.PROJECT_PATH, "env", DEFAULT_VERSION)), CreateMode.PERSISTENT);
+                ZookeeperClientUtil.createNode(zkEnvNodeDTO.getPath() + NodePathContant.PROJECT_PATH, JSON.toJSONBytes(new NodeDTO(zkEnvNodeDTO.getPath() + NodePathContant.PROJECT_PATH, "env", DEFAULT_VERSION)), CreateMode.PERSISTENT);
             }
             // 获取ZK项目列表
             List<NodeDTO> zkProjectNodeList = ZookeeperClientUtil.getChildrenNodes(zkEnvNodeDTO.getPath() + NodePathContant.PROJECT_PATH);
@@ -189,12 +187,12 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
             if (CollectionUtils.isEmpty(zkEnvNodeList.stream().filter(s -> s.getPath().endsWith(NodePathContant.PATH_SUB + dbEnvId)).collect(Collectors.toList()))) {
                 // 创建ZK环境
                 String zkEnvNodePath = getZkPathValue(dbEnvId, null, null);
-                ZookeeperClientUtil.createNode(zkEnvNodePath, JSONObject.toJSONBytes(new NodeDTO(zkEnvNodePath, dbEnvId, DEFAULT_VERSION)), CreateMode.PERSISTENT);
+                ZookeeperClientUtil.createNode(zkEnvNodePath, JSON.toJSONBytes(new NodeDTO(zkEnvNodePath, dbEnvId, DEFAULT_VERSION)), CreateMode.PERSISTENT);
             }
 
             // 判断/project是否创建
             if (!ZookeeperClientUtil.existsNode(NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + dbEnvId + NodePathContant.PROJECT_PATH)) {
-                ZookeeperClientUtil.createNode(NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + dbEnvId + NodePathContant.PROJECT_PATH, JSONObject.toJSONBytes(new NodeDTO(NodePathContant.ROOT_PATH + NodePathContant.ENV_PATH + NodePathContant.PATH_SUB + dbEnvId + NodePathContant.PROJECT_PATH, "env", DEFAULT_VERSION)), CreateMode.PERSISTENT);
+                ZookeeperClientUtil.createNode(NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + dbEnvId + NodePathContant.PROJECT_PATH, JSON.toJSONBytes(new NodeDTO(NodePathContant.ROOT_PATH + NodePathContant.ENV_PATH + NodePathContant.PATH_SUB + dbEnvId + NodePathContant.PROJECT_PATH, "env", DEFAULT_VERSION)), CreateMode.PERSISTENT);
             }
             // 获取ZK项目列表
             List<NodeDTO> zkProjectNodeList = ZookeeperClientUtil.getChildrenNodes(NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + dbEnvId + NodePathContant.PROJECT_PATH);
@@ -202,19 +200,19 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
                 if (CollectionUtils.isEmpty(zkProjectNodeList.stream().filter(s -> s.getPath().endsWith(NodePathContant.PATH_SUB + dbProjectInfoDO.getId())).collect(Collectors.toList()))) {
                     // 创建ZK项目
                     String zkProjectNodePath = getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), null);
-                    ZookeeperClientUtil.createNode(zkProjectNodePath, JSONObject.toJSONBytes(new NodeDTO(zkProjectNodePath, dbProjectInfoDO.getId(), DEFAULT_VERSION)), CreateMode.PERSISTENT);
+                    ZookeeperClientUtil.createNode(zkProjectNodePath, JSON.toJSONBytes(new NodeDTO(zkProjectNodePath, dbProjectInfoDO.getId(), DEFAULT_VERSION)), CreateMode.PERSISTENT);
                     for (ConfigInfoDO dbConfigInfoDO : getProConfigMap().get(dbProjectInfoDO.getId())) {
                         // 创建ZK配置
                         String zkConfigNodePath = getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), dbConfigInfoDO.getId());
-                        ZookeeperClientUtil.createNode(zkConfigNodePath, JSONObject.toJSONBytes(new NodeDTO(HttpConstant.getUrl(stcconfigUrl, stcconfigPort, zkConfigNodePath), dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion(), dbConfigInfoDO.getConfigFileName())), CreateMode.PERSISTENT);
+                        ZookeeperClientUtil.createNode(zkConfigNodePath, JSON.toJSONBytes(new NodeDTO(HttpConstant.getUrl(stcconfigUrl, stcconfigPort, zkConfigNodePath), dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion(), dbConfigInfoDO.getConfigFileName())), CreateMode.PERSISTENT);
                     }
                 } else {
                     List<NodeDTO> zkConfigNodeList = ZookeeperClientUtil.getChildrenNodes(getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), null));
                     for (ConfigInfoDO dbConfigInfoDO : getProConfigMap().get(dbProjectInfoDO.getId())) {
-                        if (CollectionUtils.isEmpty(zkConfigNodeList.stream().filter(s -> s.getData().equals(dbConfigInfoDO.getId())).collect(Collectors.toList()))) {
+                        if (CollectionUtils.isEmpty(zkConfigNodeList.stream().filter(s -> s.getData().equals(TypeUtil.intToString(dbConfigInfoDO.getId()))).collect(Collectors.toList()))) {
                             // 创建ZK配置
                             String zkConfigNodePath = getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), dbConfigInfoDO.getId());
-                            ZookeeperClientUtil.createNode(zkConfigNodePath, JSONObject.toJSONBytes(new NodeDTO(HttpConstant.getUrl(stcconfigUrl, stcconfigPort, zkConfigNodePath), dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion(), dbConfigInfoDO.getConfigFileName())), CreateMode.PERSISTENT);
+                            ZookeeperClientUtil.createNode(zkConfigNodePath, JSON.toJSONBytes(new NodeDTO(HttpConstant.getUrl(stcconfigUrl, stcconfigPort, zkConfigNodePath), dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion(), dbConfigInfoDO.getConfigFileName())), CreateMode.PERSISTENT);
                         } else {
                             // 比较ZK配置
                             for (NodeDTO zkConfigNodeDTO : zkConfigNodeList) {
@@ -224,7 +222,7 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
                                 if (!zkConfigNodeDTO.getVersion().equals(dbConfigInfoDO.getConfigFileVersion())) {
                                     // 更新为最新
                                     String zkConfigNodePath = getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), dbConfigInfoDO.getId());
-                                    ZookeeperClientUtil.modifyNode(zkConfigNodePath, JSONObject.toJSONBytes(new NodeDTO(zkConfigNodePath, dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion())));
+                                    ZookeeperClientUtil.modifyNode(zkConfigNodePath, JSON.toJSONBytes(new NodeDTO(zkConfigNodePath, dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion())));
                                 }
                             }
                         }

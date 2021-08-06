@@ -15,6 +15,8 @@ import java.util.Objects;
  */
 public class TypeUtil {
 
+    private TypeUtil(){}
+
     /**
      * 类型转换-null返回
      * long-int
