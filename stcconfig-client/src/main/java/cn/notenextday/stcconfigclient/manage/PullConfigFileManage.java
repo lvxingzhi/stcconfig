@@ -58,7 +58,7 @@ public class PullConfigFileManage {
                 return;
             }
             for (NodeDTO nodeDTO : nodeDTOList) {
-                logger.warn(String.format("[stcconfig][client]下载配置文件:%s", nodeDTO.getFileName()));
+                logger.warn("[stcconfig][client]下载配置文件:{}", nodeDTO.getFileName());
                 // 请求HTTP请求, 获取配置文件
                 URL remoteUrl = new URL(nodeDTO.getPath());
                 File localTmpFile = new File(stcconfigFilePath + nodeDTO.getFileName());

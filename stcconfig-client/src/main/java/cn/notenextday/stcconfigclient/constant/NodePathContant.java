@@ -6,13 +6,22 @@ package cn.notenextday.stcconfigclient.constant;
  * @Date 2021/7/30 10:40
  */
 public class NodePathContant {
+    private NodePathContant() {
+    }
+
     public static final String PATH_SUB = "/";
-    // ROOT
+    /**
+     * ROOT
+     */
     public static final String ROOT_PATH = "/stcconfig";
-    // /stcconfig/env
+    /**
+     * /stcconfig/env
+     */
     public static final String ENV_PATH = "/env";
     public static final String ENV_PATH_ALL = "/stcconfig/env";
-    // /stcconfig/env/xxx/project
+    /**
+     * /stcconfig/env/xxx/project
+     */
     public static final String PROJECT_PATH = "/project";
 
 }

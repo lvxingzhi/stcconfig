@@ -10,13 +10,13 @@ public interface ConfigInfoHistoryDao {
      *
      * @mbggenerated
      */
-    int insert(ConfigInfoHistoryDO record);
+    int insert(ConfigInfoHistoryDO configInfoHistoryDO);
 
     /**
      *
      * @mbggenerated
      */
-    int insertSelective(ConfigInfoHistoryDO record);
+    int insertSelective(ConfigInfoHistoryDO configInfoHistoryDO);
 
     /**
      *
@@ -28,17 +28,17 @@ public interface ConfigInfoHistoryDao {
      *
      * @mbggenerated
      */
-    int updateByPrimaryKeySelective(ConfigInfoHistoryDO record);
+    int updateByPrimaryKeySelective(ConfigInfoHistoryDO configInfoHistoryDO);
 
     /**
      *
      * @mbggenerated
      */
-    int updateByPrimaryKeyWithBLOBs(ConfigInfoHistoryDO record);
+    int updateByPrimaryKeyWithBLOBs(ConfigInfoHistoryDO configInfoHistoryDO);
 
     /**
      *
      * @mbggenerated
      */
-    int updateByPrimaryKey(ConfigInfoHistoryDO record);
+    int updateByPrimaryKey(ConfigInfoHistoryDO configInfoHistoryDO);
 }

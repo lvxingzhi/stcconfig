@@ -25,8 +25,7 @@ public class ClientManage {
         Integer envId = TypeUtil.stringToInt(idArray[0]);
         Integer projectId = TypeUtil.stringToInt(idArray[1]);
         Integer configId = TypeUtil.stringToInt(idArray[2]);
-        ConfigDTO configDTO = new ConfigDTO(envId, projectId, configId);
-        return configDTO;
+        return new ConfigDTO(envId, projectId, configId);
     }
 
 }

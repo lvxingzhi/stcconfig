@@ -3,6 +3,7 @@ package cn.notenextday.stcconfigclient.util;
 import cn.notenextday.stcconfigclient.constant.NodePathContant;
 import cn.notenextday.stcconfigclient.dto.NodeDTO;
 import cn.notenextday.stcconfigclient.watcher.ConnectedWatcher;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.Watcher;
@@ -32,6 +33,8 @@ import java.util.concurrent.CountDownLatch;
  * @Date 2021/7/27 11:19
  */
 public class ZookeeperClientUtil {
+
+    private ZookeeperClientUtil(){}
     private static final Logger logger = LoggerFactory.getLogger(ZookeeperClientUtil.class);
     private static ZooKeeper zookeeper = null;
 
@@ -50,7 +53,7 @@ public class ZookeeperClientUtil {
             waitUntilConnected(zookeeper);
             zookeeper.create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, createMode);
         } catch (Exception e) {
-            logger.error("[zookeeper] 创建节点异常,{}", e);
+            logger.error("[zookeeper] 创建节点异常", e);
         }
     }
 
@@ -62,7 +65,7 @@ public class ZookeeperClientUtil {
             waitUntilConnected(zookeeper);
             zookeeper.setData(path, data, zookeeper.exists(path, false).getVersion());
         } catch (Exception e) {
-            logger.error("[zookeeper] 修改节点异常,{}", e);
+            logger.error("[zookeeper] 修改节点异常", e);
         }
     }
 
@@ -77,9 +80,9 @@ public class ZookeeperClientUtil {
                 return null;
             }
             String dataStr = new String(dataByte, "UTF-8");
-            return JSONObject.parseObject(dataStr, NodeDTO.class);
+            return JSON.parseObject(dataStr, NodeDTO.class);
         } catch (Exception e) {
-            logger.error("[zookeeper] 获取节点异常,{}", e);
+            logger.error("[zookeeper] 获取节点异常", e);
         }
         return null;
     }
@@ -97,7 +100,7 @@ public class ZookeeperClientUtil {
                 resultNodeList.add(childNode);
             }
         } catch (Exception e) {
-            logger.error("[zookeeper] 获取子节点列表异常,{}", e);
+            logger.error("[zookeeper] 获取子节点列表异常", e);
         }
         return resultNodeList;
     }
@@ -110,7 +113,7 @@ public class ZookeeperClientUtil {
             waitUntilConnected(zookeeper);
             zookeeper.delete(path, zookeeper.exists(path, false).getVersion());
         } catch (Exception e) {
-            logger.error("[zookeeper] 删除节点异常,{}", e);
+            logger.error("[zookeeper] 删除节点异常", e);
         }
     }
 
@@ -122,7 +125,7 @@ public class ZookeeperClientUtil {
             waitUntilConnected(zookeeper);
             return Objects.nonNull(zookeeper.exists(path, watcher));
         } catch (Exception e) {
-            logger.error("[zookeeper] 检查节点异常,{}", e);
+            logger.error("[zookeeper] 检查节点异常", e);
         }
         return false;
     }
@@ -143,7 +146,7 @@ public class ZookeeperClientUtil {
             });
         } catch (IOException e) {
             e.printStackTrace();
-            logger.error("[zookeeper] 初始化异常{}", e);
+            logger.error("[zookeeper] 初始化异常", e);
         }
     }
 
@@ -170,8 +173,7 @@ public class ZookeeperClientUtil {
                 // 阻塞, 等待事件触发后的激活以继续执行
                 connectedLatch.await();
             } catch (InterruptedException e) {
-                logger.error("[zookeeper] 等待连接中异常,{}", e);
-                throw new IllegalStateException(e);
+                logger.error("[zookeeper] 等待连接中异常", e);
             }
         }
     }

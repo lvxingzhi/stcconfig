@@ -3,6 +3,7 @@ package cn.notenextday.stcconfigclient.util;
 
 import org.apache.logging.log4j.util.Strings;
 
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 /**
@@ -14,6 +15,8 @@ import java.util.Objects;
  * @Date 2021/6/4 16:06
  */
 public class TypeUtil {
+
+    private TypeUtil(){}
 
     /**
      * 类型转换-null返回

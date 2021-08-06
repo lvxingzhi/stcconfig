@@ -12,13 +12,13 @@ public interface ConfigInfoDao {
      *
      * @mbggenerated
      */
-    int insert(ConfigInfoDO record);
+    int insert(ConfigInfoDO configInfoDO);
 
     /**
      *
      * @mbggenerated
      */
-    int insertSelective(ConfigInfoDO record);
+    int insertSelective(ConfigInfoDO configInfoDO);
 
     /**
      *
@@ -30,19 +30,19 @@ public interface ConfigInfoDao {
      *
      * @mbggenerated
      */
-    int updateByPrimaryKeySelective(ConfigInfoDO record);
+    int updateByPrimaryKeySelective(ConfigInfoDO configInfoDO);
 
     /**
      *
      * @mbggenerated
      */
-    int updateByPrimaryKeyWithBLOBs(ConfigInfoDO record);
+    int updateByPrimaryKeyWithBLOBs(ConfigInfoDO configInfoDO);
 
     /**
      *
      * @mbggenerated
      */
-    int updateByPrimaryKey(ConfigInfoDO record);
+    int updateByPrimaryKey(ConfigInfoDO configInfoDO);
 
     /**
      *

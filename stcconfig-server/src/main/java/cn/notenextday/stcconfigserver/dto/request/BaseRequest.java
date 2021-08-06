@@ -1,8 +1,6 @@
 package cn.notenextday.stcconfigserver.dto.request;
 
 
-import javax.validation.constraints.NotNull;
-
 /**
  * @Author xingzhi.lv
  * @Version 2.0

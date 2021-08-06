@@ -6,6 +6,7 @@ package cn.notenextday.stcconfigserver.constant;
  * @Date 2021/8/2 19:53
  */
 public class HttpConstant {
+    private HttpConstant(){}
     public static final String HTTP_CONTENT_TYPE_UTF8 = "application/json;charset=utf-8";
     public static final String URL_PREFIX = "http://";
     public static final String URL_MIDDEL = ":";

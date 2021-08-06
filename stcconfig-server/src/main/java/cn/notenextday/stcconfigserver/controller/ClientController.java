@@ -4,24 +4,17 @@ import cn.notenextday.stcconfigserver.constant.ControllerPathConstant;
 import cn.notenextday.stcconfigserver.constant.HttpConstant;
 import cn.notenextday.stcconfigserver.dto.ConfigDTO;
 import cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO;
-import cn.notenextday.stcconfigserver.dto.request.BaseRequest;
-import cn.notenextday.stcconfigserver.dto.request.ClientGetConfigRequest;
 import cn.notenextday.stcconfigserver.manage.controller.ClientManage;
 import cn.notenextday.stcconfigserver.service.ConfigInfoService;
-import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
@@ -46,43 +39,20 @@ public class ClientController {
     /**
      * 配置下载
      */
-    @RequestMapping(value = "/getConfigFile", method = {RequestMethod.GET}, produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    @GetMapping(value = "/getConfigFile", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
     public ResponseEntity<Byte[]> getConfigFile(@RequestParam String path) {
         ConfigDTO configDTO = clientManage.splitForConfigDTO(path);
         ConfigInfoDO configInfoDO = configInfoService.findById(configDTO.getConfigId());
-        // 查询配置信息
-        HttpHeaders headers = new HttpHeaders();
         try {
+            // 查询配置信息
+            HttpHeaders headers = new HttpHeaders();
             String fileName = URLEncoder.encode(configInfoDO.getConfigFileName(), StandardCharsets.UTF_8.name());
             headers.add(HttpHeaders.CONTENT_DISPOSITION, FILE_CONTENT_CONSTANT + fileName);
             return new ResponseEntity(configInfoDO.getConfigFileContent().getBytes(StandardCharsets.UTF_8), headers, HttpStatus.OK);
         } catch (UnsupportedEncodingException e) {
-            logger.error("[controller] 下载配置文件失败,{}", e);
+            logger.error("[controller] 下载配置文件失败", e);
         }
         return null;
     }
-
-    //    /**
-    //     * @Validated 和 BindingResult的用法
-    //     *
-    //     * @param baseRequest
-    //     * @return see ConfigReadController
-    //     */
-    //    @RequestMapping(value = "/getConfigFile", method = {RequestMethod.GET}, produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
-    //    public ResponseEntity<Byte[]> getConfigFile(@Validated @RequestBody BaseRequest baseRequest, BindingResult bindingResult) {
-    //        ClientGetConfigRequest request = JSONObject.parseObject(baseRequest.getData(), ClientGetConfigRequest.class);
-    //        ConfigDTO configDTO = clientManage.splitForConfigDTO(request.getPath());
-    //        ConfigInfoDO configInfoDO = configInfoService.findById(configDTO.getConfigId());
-    //        // 查询配置信息
-    //        HttpHeaders headers = new HttpHeaders();
-    //        try {
-    //            String fileName = URLEncoder.encode(configInfoDO.getConfigFileName(), StandardCharsets.UTF_8.name());
-    //            headers.add(HttpHeaders.CONTENT_DISPOSITION, FILE_CONTENT_CONSTANT + fileName);
-    //            return new ResponseEntity(configInfoDO.getConfigFileContent().getBytes(StandardCharsets.UTF_8), headers, HttpStatus.OK);
-    //        } catch (UnsupportedEncodingException e) {
-    //            logger.error("[controller] 下载配置文件失败,{}", e);
-    //        }
-    //        return null;
-    //    }
 
 }

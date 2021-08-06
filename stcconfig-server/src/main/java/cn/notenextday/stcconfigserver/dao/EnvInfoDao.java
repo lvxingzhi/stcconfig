@@ -12,13 +12,13 @@ public interface EnvInfoDao {
      *
      * @mbggenerated
      */
-    int insert(EnvInfoDO record);
+    int insert(EnvInfoDO envInfoDO);
 
     /**
      *
      * @mbggenerated
      */
-    int insertSelective(EnvInfoDO record);
+    int insertSelective(EnvInfoDO envInfoDO);
 
     /**
      *
@@ -30,13 +30,13 @@ public interface EnvInfoDao {
      *
      * @mbggenerated
      */
-    int updateByPrimaryKeySelective(EnvInfoDO record);
+    int updateByPrimaryKeySelective(EnvInfoDO envInfoDO);
 
     /**
      *
      * @mbggenerated
      */
-    int updateByPrimaryKey(EnvInfoDO record);
+    int updateByPrimaryKey(EnvInfoDO envInfoDO);
 
     /**
      *

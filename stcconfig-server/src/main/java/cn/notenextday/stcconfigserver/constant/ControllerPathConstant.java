@@ -7,5 +7,7 @@ package cn.notenextday.stcconfigserver.constant;
  */
 public class ControllerPathConstant {
 
+    private ControllerPathConstant(){}
+
     public static final String CLIENT = "/client";
 }
