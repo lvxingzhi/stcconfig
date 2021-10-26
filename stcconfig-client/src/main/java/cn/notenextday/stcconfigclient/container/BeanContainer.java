@@ -17,7 +17,10 @@ public class BeanContainer {
     }
 
     private static volatile BeanContainer beanContainer = new BeanContainer();
-
+    /**
+     * key: 配置文件名
+     * value: Bean节点(bean对象, 配置属性集合)
+     */
     private volatile Map<String, BeanNode> dataMap = new HashMap<>();
 
     /**
@@ -25,27 +28,6 @@ public class BeanContainer {
      */
     public static BeanContainer container() {
         return BeanContainer.beanContainer;
-    }
-
-    class BeanNode {
-        private Object object;
-        private List<String> fieldList;
-
-        public Object getObject() {
-            return object;
-        }
-
-        public void setObject(Object object) {
-            this.object = object;
-        }
-
-        public List<String> getFieldList() {
-            return fieldList;
-        }
-
-        public void setFieldList(List<String> fieldList) {
-            this.fieldList = fieldList;
-        }
     }
 
     public Map<String, BeanNode> getDataMap() {

@@ -1,7 +1,6 @@
 package cn.notenextday.stcconfigclient.container;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,7 +17,11 @@ public class ConfigContainer {
 
     private static volatile ConfigContainer configContainer = new ConfigContainer();
 
-    private volatile Map<String, List<String>> dataMap = new HashMap<>();
+    /**
+     * key: 配置文件名
+     * value: 配置集合
+     */
+    private volatile Map<String, Map<String, String>> dataMap = new HashMap<>();
 
     /**
      * 获取容器
@@ -27,7 +30,7 @@ public class ConfigContainer {
         return configContainer;
     }
 
-    public Map<String, List<String>> getDataMap() {
+    public Map<String, Map<String, String>> getDataMap() {
         return dataMap;
     }
 
