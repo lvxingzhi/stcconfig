@@ -58,6 +58,8 @@ public class PullConfigFileManage {
         }
         // 下载配置文件
         pullConfigFile();
+        // TODO 根据bean容器, 配置容器, 更新bean中的变量值
+
     }
 
     /**
