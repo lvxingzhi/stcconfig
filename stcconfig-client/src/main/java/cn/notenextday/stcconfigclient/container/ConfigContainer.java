@@ -1,5 +1,9 @@
 package cn.notenextday.stcconfigclient.container;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 配置容器[管理配置]
  *
@@ -9,5 +13,22 @@ package cn.notenextday.stcconfigclient.container;
  */
 public class ConfigContainer {
 
+    private ConfigContainer() {
+    }
+
+    private static volatile ConfigContainer configContainer = new ConfigContainer();
+
+    private volatile Map<String, List<String>> dataMap = new HashMap<>();
+
+    /**
+     * 获取容器
+     */
+    public static ConfigContainer container() {
+        return configContainer;
+    }
+
+    public Map<String, List<String>> getDataMap() {
+        return dataMap;
+    }
 
 }

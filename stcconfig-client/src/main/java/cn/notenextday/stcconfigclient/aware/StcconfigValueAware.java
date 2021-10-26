@@ -1,0 +1,39 @@
+package cn.notenextday.stcconfigclient.aware;
+
+import cn.notenextday.stcconfigclient.annotations.StcconfigValue;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.stereotype.Component;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+
+/**
+ * 初始化扫描StcconfigValue注解配置属性到容器中管理
+ *
+ * @Author xingzhi.lv
+ * @Version 2.0
+ * @Date 2021/8/6 16:27
+ */
+@Component
+public class StcconfigValueAware implements BeanPostProcessor {
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        Field[] fields = bean.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getType() != String.class && field.getType() != Integer.class) {
+                return bean;
+            }
+            Annotation[] annotations = field.getAnnotations();
+            for (Annotation annotation : annotations) {
+                if (!(annotation instanceof StcconfigValue)) {
+                    return bean;
+                }
+            }
+            // TODO bean注册到动态对象容器中<package.className>-(Object, <List<field>>)
+        }
+        return bean;
+    }
+
+}
