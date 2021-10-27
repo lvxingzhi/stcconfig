@@ -25,7 +25,7 @@ public class ConnectedWatcher implements Watcher {
     @Override
     public void process(WatchedEvent event) {
         if (event.getState() == Event.KeeperState.SyncConnected) {
-            logger.info("[zookeeper] 服务重新连接成功,激活");
+            logger.info("[stcconfig][client][zookeeper] 服务重新连接成功,激活");
             connectedLatch.countDown();
         }
     }

@@ -1,8 +1,12 @@
 package cn.notenextday.stcconfigclient.manage;
 
 import cn.notenextday.stcconfigclient.annotations.StcconfigValue;
+import cn.notenextday.stcconfigclient.bean.DemoBean;
 import cn.notenextday.stcconfigclient.constant.NodePathContant;
+import cn.notenextday.stcconfigclient.container.BeanContainer;
+import cn.notenextday.stcconfigclient.container.BeanNode;
 import cn.notenextday.stcconfigclient.container.ConfigContainer;
+import cn.notenextday.stcconfigclient.container.FieldNode;
 import cn.notenextday.stcconfigclient.dto.NodeDTO;
 import cn.notenextday.stcconfigclient.util.ZookeeperClientUtil;
 import cn.notenextday.stcconfigclient.watcher.NodeActionWatcher;
@@ -11,6 +15,8 @@ import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -33,7 +39,7 @@ import java.util.Map;
  * @Date 2021/8/3 14:53
  */
 @Service
-public class PullConfigFileManage {
+public class PullConfigFileManage implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(PullConfigFileManage.class);
     private String stcconfigFilePath = "./src/main/resources/stcconfig/";
     @Value("${server.stcconfig.envId}")
@@ -42,15 +48,15 @@ public class PullConfigFileManage {
     private Integer projectId;
     @StcconfigValue(fileName = "app.properties", key = "123")
     private String testValue;
-
     @Resource
     private PullConfigFileManage pullConfigFileManage;
+    @Resource
+    private DemoBean demoBean;
 
     /**
      * 配置文件初始化
      */
     public void init() {
-        logger.info("+++++++++++++++++++++++++++++++++++++++++++++:" + testValue);
         // 增加监控
         if (!ZookeeperClientUtil.existsNode(NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + envId + NodePathContant.PROJECT_PATH + NodePathContant.PATH_SUB + projectId, new NodeActionWatcher(pullConfigFileManage))) {
             logger.warn("[stcconfig][client]注册中心未找到配置节点,请检查");
@@ -58,8 +64,27 @@ public class PullConfigFileManage {
         }
         // 下载配置文件
         pullConfigFile();
-        // TODO 根据bean容器, 配置容器, 更新bean中的变量值
-
+        // 根据容器(bean, 配置), 更新bean中的变量值
+        Map<String, BeanNode> beanMap = BeanContainer.container().getDataMap();
+        Map<String, Map<String, String>> configMap = ConfigContainer.container().getDataMap();
+        if (beanMap.size() < 0) {
+            return;
+        }
+        beanMap.forEach((key, value) -> {
+            Object object = value.getObject();
+            List<FieldNode> fieldNodeList = value.getFieldList();
+            if (CollectionUtils.isEmpty(fieldNodeList)) {
+                return;
+            }
+            for (FieldNode fieldNode : fieldNodeList) {
+                Map<String, String> config = configMap.get(fieldNode.getAnnoFileName());
+                String configValue = config.get(fieldNode.getAnnokeyName());
+                BeanMap springBeanMap = BeanMap.create(object);
+                springBeanMap.put(fieldNode.getFieldName(), configValue);
+                logger.info("[stcconfig][client]赋值,fieldName:{}, value:{}", fieldNode.getFieldName(), configValue);
+            }
+        });
+        logger.info("[stcconfig][client]测试赋值是否成功: demoBean.name={}", demoBean.getName());
     }
 
     /**
@@ -107,5 +132,10 @@ public class PullConfigFileManage {
         } catch (IOException e) {
             logger.error("[stcconfig][client] 请求服务器拉取配置文件失败");
         }
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        this.init();
     }
 }

@@ -13,6 +13,7 @@ import org.apache.zookeeper.CreateMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
@@ -244,4 +245,8 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
         return version + 1;
     }
 
+    @Override
+    public void run(String... args) throws Exception {
+        this.init();
+    }
 }

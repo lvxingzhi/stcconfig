@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class BeanNode {
     private Object object;
-    private List<String> fieldList;
+    private List<FieldNode> fieldList;
 
     public Object getObject() {
         return object;
@@ -21,11 +21,11 @@ public class BeanNode {
         this.object = object;
     }
 
-    public List<String> getFieldList() {
+    public List<FieldNode> getFieldList() {
         return fieldList;
     }
 
-    public void setFieldList(List<String> fieldList) {
+    public void setFieldList(List<FieldNode> fieldList) {
         this.fieldList = fieldList;
     }
 }

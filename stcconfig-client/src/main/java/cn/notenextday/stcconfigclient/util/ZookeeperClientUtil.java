@@ -143,7 +143,7 @@ public class ZookeeperClientUtil {
             zookeeper = new ZooKeeper("127.0.0.1:2181", 155000, watchedEvent -> {
                 // 监听节点事件, 监听连接事件
                 if (Watcher.Event.KeeperState.SyncConnected.equals(watchedEvent.getState())) {
-                    logger.info("[zookeeper] 服务连接成功");
+                    logger.info("[stcconfig][client][zookeeper] 服务连接成功");
                 }
             });
         } catch (IOException e) {

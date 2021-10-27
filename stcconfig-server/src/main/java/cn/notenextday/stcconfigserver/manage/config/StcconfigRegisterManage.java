@@ -9,6 +9,7 @@ import cn.notenextday.stcconfigserver.service.EnvInfoService;
 import cn.notenextday.stcconfigserver.service.ProjectInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -23,7 +24,7 @@ import java.util.Map;
  * @Version 2.0
  * @Date 2021/7/28 11:30
  */
-public abstract class StcconfigRegisterManage {
+public abstract class StcconfigRegisterManage implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(StcconfigRegisterManage.class);
     @Resource
     private EnvInfoService envInfoService;

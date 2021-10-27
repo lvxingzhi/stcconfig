@@ -33,7 +33,9 @@ import java.util.concurrent.CountDownLatch;
  * @Date 2021/7/27 11:19
  */
 public class ZookeeperClientUtil {
-    private ZookeeperClientUtil(){}
+    private ZookeeperClientUtil() {
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(ZookeeperClientUtil.class);
     private static ZooKeeper zookeeper = null;
 
@@ -140,12 +142,12 @@ public class ZookeeperClientUtil {
             zookeeper = new ZooKeeper("127.0.0.1:2181", 155000, watchedEvent -> {
                 // 监听节点事件, 监听连接事件
                 if (Watcher.Event.KeeperState.SyncConnected.equals(watchedEvent.getState())) {
-                    logger.info("服务连接成功");
+                    logger.info("[stcconfig][server][zookeeper]服务连接成功");
                 }
             });
         } catch (IOException e) {
             e.printStackTrace();
-            logger.error("[zookeeper] 初始化异常", e);
+            logger.error("[stcconfig][server][zookeeper] 初始化异常", e);
         }
     }
 
