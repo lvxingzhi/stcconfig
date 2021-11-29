@@ -22,9 +22,9 @@ public class ClientManage {
         path = path.replace("/stcconfig/env", ""); // envId/project/projectId/configId
         path = path.replace("/project", ""); // envId/projectId/configId
         String[] idArray = path.split("/");
-        Integer envId = TypeUtil.stringToInt(idArray[0]);
-        Integer projectId = TypeUtil.stringToInt(idArray[1]);
-        Integer configId = TypeUtil.stringToInt(idArray[2]);
+        Integer envId = TypeUtil.stringToInt(idArray[1]);
+        Integer projectId = TypeUtil.stringToInt(idArray[2]);
+        Integer configId = TypeUtil.stringToInt(idArray[3]);
         return new ConfigDTO(envId, projectId, configId);
     }
 

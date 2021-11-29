@@ -40,9 +40,9 @@ public class ZookeeperClientUtil {
     private static final Logger logger = LoggerFactory.getLogger(ZookeeperClientUtil.class);
     private static ZooKeeper zookeeper = null;
 
-    static {
-        init();
-    }
+//    static {
+//        init();
+//    }
 
     /**
      * 创建节点
@@ -135,7 +135,7 @@ public class ZookeeperClientUtil {
     /**
      * 初始化连接
      */
-    private static void init() {
+    public static void init(String url) {
         try {
             if (Objects.nonNull(zookeeper) && zookeeper.getState().isAlive()) {
                 return;

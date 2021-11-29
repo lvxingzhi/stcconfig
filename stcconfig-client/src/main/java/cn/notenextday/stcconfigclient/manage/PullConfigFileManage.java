@@ -1,6 +1,5 @@
 package cn.notenextday.stcconfigclient.manage;
 
-import cn.notenextday.stcconfigclient.annotations.StcconfigValue;
 import cn.notenextday.stcconfigclient.bean.DemoBean;
 import cn.notenextday.stcconfigclient.constant.NodePathContant;
 import cn.notenextday.stcconfigclient.container.BeanContainer;
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.cglib.beans.BeanMap;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -38,16 +38,20 @@ import java.util.Map;
  * @Version 2.0
  * @Date 2021/8/3 14:53
  */
+@Order(value = 1)
 @Service
 public class PullConfigFileManage implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(PullConfigFileManage.class);
-    private String stcconfigFilePath = "./src/main/resources/stcconfig/";
+    private String STCCONFIG_FILE_PATH_DEFAULT = this.getClass().getResource("/").getPath() + "stcconfig" + "/";
+    private String stcconfigFilePath = STCCONFIG_FILE_PATH_DEFAULT;
     @Value("${server.stcconfig.envId}")
     private Integer envId;
     @Value("${server.stcconfig.projectId}")
     private Integer projectId;
-    @StcconfigValue(fileName = "app.properties", key = "123")
-    private String testValue;
+    @Value("${server.stcconfig.zookeeperUrl}")
+    private String zookeeperUrl;
+    @Value("${server.stcconfig.directory}")
+    private String directory;
     @Resource
     private PullConfigFileManage pullConfigFileManage;
     @Resource
@@ -98,7 +102,7 @@ public class PullConfigFileManage implements CommandLineRunner {
                 return;
             }
             for (NodeDTO nodeDTO : nodeDTOList) {
-                logger.warn("[stcconfig][client]下载配置文件:{}", nodeDTO.getFileName());
+                logger.warn("[stcconfig][client]下载配置文件:{}{}", stcconfigFilePath, nodeDTO.getFileName());
                 // 请求HTTP请求, 获取配置文件,拷贝到本地
                 URL remoteUrl = new URL(nodeDTO.getPath());
                 File localTmpFile = new File(stcconfigFilePath + nodeDTO.getFileName());
@@ -121,7 +125,7 @@ public class PullConfigFileManage implements CommandLineRunner {
                             continue;
                         }
                         String key = configKeyAndValue.substring(0, index);
-                        String value = configKeyAndValue.substring(index);
+                        String value = configKeyAndValue.substring(index+1);
                         dataMap.put(key, value);
                     }
                     ConfigContainer.container().getDataMap().put(nodeDTO.getFileName(), dataMap);
@@ -134,8 +138,18 @@ public class PullConfigFileManage implements CommandLineRunner {
         }
     }
 
+    /**
+     * Spring 启动初始化
+     *
+     * @param args
+     * @throws Exception
+     */
     @Override
     public void run(String... args) throws Exception {
+        ZookeeperClientUtil.init(zookeeperUrl);
+        if (!Strings.isEmpty(directory)) {
+            stcconfigFilePath = this.getClass().getResource("/").getPath() + directory + "/";
+        }
         this.init();
     }
 }

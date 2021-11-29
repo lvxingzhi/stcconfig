@@ -1,4 +1,4 @@
-package cn.notenextday.stcconfigclient.bean;
+package cn.notenextday.democlient.service;
 
 import cn.notenextday.stcconfigclient.annotations.StcconfigValue;
 import org.springframework.stereotype.Component;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
  * @Date 2021/10/27 11:20
  */
 @Component
-public class DemoBean {
+public class DemoClientBean {
 
-    @StcconfigValue(key = "name", fileName = "app.properties")
+    @StcconfigValue(key = "name", fileName = "app2.properties")
     private String name;
     @StcconfigValue(key = "age", fileName = "app4.yaml")
     private String age;
