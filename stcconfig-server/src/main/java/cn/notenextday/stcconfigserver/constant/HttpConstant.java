@@ -1,6 +1,8 @@
 package cn.notenextday.stcconfigserver.constant;
 
 /**
+ * HTTP常量
+ *
  * @Author xingzhi.lv
  * @Version 2.0
  * @Date 2021/8/2 19:53

@@ -22,6 +22,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * 控制层对外接口
+ *
  * @Author xingzhi.lv
  * @Version 2.0
  * @Date 2021/7/30 10:06

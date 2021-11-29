@@ -6,6 +6,8 @@ import org.apache.zookeeper.Watcher;
 import java.util.concurrent.CountDownLatch;
 
 /**
+ * ZK节点监控
+ *
  * @Author xingzhi.lv
  * @Version 2.0
  * @Date 2021/7/30 16:31
