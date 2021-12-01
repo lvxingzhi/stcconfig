@@ -17,6 +17,7 @@
     <modules>
         <module>stcconfig-server</module>
         <module>stcconfig-client</module>
+        <module>stcconfig-web</module>
         <module>demo-client</module>
     </modules>
 </project>
