@@ -17,7 +17,7 @@
       "child": [
         {
           "title": "环境管理",
-          "href": "page/menu.html",
+          "href": "stcconfig/page/env.html",
           "icon": "fa fa-files-o",
           "target": "_self"
         },
