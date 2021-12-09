@@ -1,10 +1,13 @@
 package cn.notenextday.stcconfigserver.dto.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
  * 配置表
  */
+@Data
 public class ConfigInfoDO {
     /**
      * ID
@@ -77,100 +80,4 @@ public class ConfigInfoDO {
      * 表字段: config_file_content
      */
     private String configFileContent;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getConfigType() {
-        return configType;
-    }
-
-    public void setConfigType(String configType) {
-        this.configType = configType;
-    }
-
-    public String getConfigFileName() {
-        return configFileName;
-    }
-
-    public void setConfigFileName(String configFileName) {
-        this.configFileName = configFileName;
-    }
-
-    public String getConfigFileType() {
-        return configFileType;
-    }
-
-    public void setConfigFileType(String configFileType) {
-        this.configFileType = configFileType;
-    }
-
-    public Integer getConfigFileVersion() {
-        return configFileVersion;
-    }
-
-    public void setConfigFileVersion(Integer configFileVersion) {
-        this.configFileVersion = configFileVersion;
-    }
-
-    public Integer getConfigFileVersionPrevious() {
-        return configFileVersionPrevious;
-    }
-
-    public void setConfigFileVersionPrevious(Integer configFileVersionPrevious) {
-        this.configFileVersionPrevious = configFileVersionPrevious;
-    }
-
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
-    }
-
-    public Integer getConfigIndex() {
-        return configIndex;
-    }
-
-    public void setConfigIndex(Integer configIndex) {
-        this.configIndex = configIndex;
-    }
-
-    public Integer getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(Integer deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getConfigFileContent() {
-        return configFileContent;
-    }
-
-    public void setConfigFileContent(String configFileContent) {
-        this.configFileContent = configFileContent;
-    }
 }

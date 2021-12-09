@@ -1,10 +1,13 @@
 package cn.notenextday.stcconfigserver.dto.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
  * 用户表实体
  */
+@Data
 public class UserInfoDO {
     /**
      * ID
@@ -41,52 +44,4 @@ public class UserInfoDO {
      * 表字段: update_time
      */
     private Date updateTime;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public String getAccountPassword() {
-        return accountPassword;
-    }
-
-    public void setAccountPassword(String accountPassword) {
-        this.accountPassword = accountPassword;
-    }
-
-    public Integer getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(Integer deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

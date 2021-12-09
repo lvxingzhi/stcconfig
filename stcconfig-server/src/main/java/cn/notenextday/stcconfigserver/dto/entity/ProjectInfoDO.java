@@ -1,10 +1,13 @@
 package cn.notenextday.stcconfigserver.dto.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
  * 项目表
  */
+@Data
 public class ProjectInfoDO {
     /**
      * ID
@@ -42,51 +45,4 @@ public class ProjectInfoDO {
      */
     private Date updateTime;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public Integer getEnvId() {
-        return envId;
-    }
-
-    public void setEnvId(Integer envId) {
-        this.envId = envId;
-    }
-
-    public Integer getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(Integer deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

@@ -13,4 +13,5 @@ public class ControllerPathConstant {
     }
 
     public static final String CLIENT = "/client";
+    public static final String WEBAPI = "/webapi";
 }

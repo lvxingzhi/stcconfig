@@ -1,7 +1,10 @@
 package cn.notenextday.stcconfigserver.dto.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class EnvInfoDO {
     /**
      * ID
@@ -33,43 +36,9 @@ public class EnvInfoDO {
      */
     private Date updateTime;
 
-    public Integer getId() {
-        return id;
-    }
+    /**
+     * 父节点
+     */
+    private Integer parentId;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getEnvName() {
-        return envName;
-    }
-
-    public void setEnvName(String envName) {
-        this.envName = envName;
-    }
-
-    public Integer getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(Integer deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

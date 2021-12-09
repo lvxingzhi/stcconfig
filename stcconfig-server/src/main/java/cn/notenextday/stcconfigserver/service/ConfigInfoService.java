@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
+ * Config-service
+ *
  * @Author xingzhi.lv
  * @Version 2.0
  * @Date 2021/7/29 16:04
@@ -26,9 +28,7 @@ public class ConfigInfoService {
     }
 
     /**
-     *
-     * @param configId
-     * @return
+     * 查询配置详情
      */
     public ConfigInfoDO findById(Integer configId) {
         return configInfoDao.selectByPrimaryKey(configId);

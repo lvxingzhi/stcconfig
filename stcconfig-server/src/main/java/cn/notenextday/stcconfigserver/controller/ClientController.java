@@ -22,7 +22,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 控制层对外接口
+ * 对客户端暴露接口
  *
  * @Author xingzhi.lv
  * @Version 2.0
