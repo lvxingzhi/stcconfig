@@ -19,7 +19,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">环境名称</label>
         <div class="layui-input-block">
-            <input type="text" name="env_name" lay-verify="required" lay-reqtext="环境名称不能为空" placeholder="请输入环境名称"
+            <input type="text" name="envName" lay-verify="required" lay-reqtext="环境名称不能为空" placeholder="请输入环境名称"
                    value="" class="layui-input">
             <tip>填写环境名称</tip>
         </div>
@@ -27,8 +27,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">状态</label>
         <div class="layui-input-block">
-            <input type="radio" name="delete_flag" value="0" title="有效" checked="">
-            <input type="radio" name="delete_flag" value="1" title="无效">
+            <input type="radio" name="deleteFlag" value="0" title="有效" checked="">
+            <input type="radio" name="deleteFlag" value="1" title="无效">
         </div>
     </div>
     <div class="layui-form-item">
@@ -52,7 +52,7 @@
                 // 请求保存环境
                 $.ajax({
                     url: "/env/add",
-                    data: {},
+                    data: JSON.stringify(data.field),
                     type: "post",
                     dataType: "json",
                     headers: {'Content-Type': 'application/json;charset=utf-8'}, //接口json格式
@@ -61,6 +61,7 @@
                         layer.alert(JSON.stringify(data), {
                             title: data
                         });
+                        window.parent.location.reload();
                     },
                     error: function (data) {
                         layer.alert(JSON.stringify(data), {
@@ -78,6 +79,7 @@
         });
 
     });
+
 </script>
 </body>
 </html>

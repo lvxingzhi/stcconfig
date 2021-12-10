@@ -14,4 +14,8 @@ public class ServerUrlConstant {
     public static final String SERVER_ENV_LIST = "/webapi/getEnvList";
     // 新增环境
     public static final String SERVER_ADD_ENV = "/webapi/addEnv";
+    // 配置文件列表
+    public static final String SERVER_CONFIG_LIST = "/webapi/getConfigList";
+    // 新增配置文件
+    public static final String SERVER_ADD_CONFIG = "/webapi/addConfig";
 }

@@ -29,7 +29,7 @@
           "child": [
             {
               "title": "环境一",
-              "href": "page/welcome-1.html",
+              "href": "stcconfig/page/table.html",
               "icon": "fa fa-file-word-o",
               "target": "_self"
             },

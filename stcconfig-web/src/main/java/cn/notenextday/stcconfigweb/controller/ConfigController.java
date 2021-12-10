@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 /**
- * 环境
+ * 配置文件
  *
  * @Author xingzhi.lv
  * @Version 2.0
@@ -25,18 +25,18 @@ import java.util.Map;
  * https://www.jianshu.com/p/4b7641399b5f
  */
 @Controller
-@RequestMapping("/env")
-public class EnvController {
-    private static final Logger logger = LoggerFactory.getLogger(EnvController.class);
+@RequestMapping("/config")
+public class ConfigController {
+    private static final Logger logger = LoggerFactory.getLogger(ConfigController.class);
 
     /**
-     * 环境列表
+     * 配置文件列表
      */
     @ResponseBody
-    @RequestMapping(value = "/getEnvList", produces = "application/json;charset=utf-8")
-    public Map<String, Object> getEnvList(@RequestBody JSONObject json) {
+    @RequestMapping(value = "/getConfigList", produces = "application/json;charset=utf-8")
+    public Map<String, Object> getConfigList(@RequestBody JSONObject json) {
         RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_ENV_LIST, json, String.class);
+        String response = restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_CONFIG_LIST, json, String.class);
         List<Map> envList = JSON.parseArray(response, Map.class);
         Map<String, Object> map = new HashMap<>();
         map.put("code", 0);
@@ -53,7 +53,7 @@ public class EnvController {
     @RequestMapping(value = "/add", produces = "application/json;charset=utf-8")
     public Map<String, Object> add(@RequestBody JSONObject json) {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_ADD_ENV, json, String.class);
+        restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_ADD_CONFIG, json, String.class);
         Map<String, Object> map = new HashMap<>();
         map.put("code", 0);
         map.put("msg", "成功");

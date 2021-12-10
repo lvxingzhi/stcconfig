@@ -40,6 +40,29 @@
     from config_info
     where  project_id= #{projectId,jdbcType=INTEGER}
   </select>
+  <select id="findListByCondition" resultMap="ResultMapWithBLOBs" parameterType="java.util.Map" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from config_info
+    where 1=1
+    <if test="configType != null" >
+      and config_type = #{configType},
+    </if>
+    <if test="configFileName != null" >
+      and config_file_name = #{configFileName},
+    </if>
+    <if test="configFileType != null" >
+      and config_file_type = #{configFileType},
+    </if>
+    <if test="projectId != null" >
+      and project_id = #{projectId},
+    </if>
+    <if test="deleteFlag != null" >
+      and delete_flag = #{deleteFlag},
+    </if>
+  </select>
   <insert id="insert" parameterType="cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO" >
     insert into config_info (id, config_type, config_file_name, 
       config_file_type, config_file_version, config_file_version_previous, 

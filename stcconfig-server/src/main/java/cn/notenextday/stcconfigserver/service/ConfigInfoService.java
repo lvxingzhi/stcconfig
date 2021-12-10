@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Config-service
@@ -25,6 +26,13 @@ public class ConfigInfoService {
      */
     public List<ConfigInfoDO> findListByProjectId(Integer projectId) {
         return configInfoDao.findListByProjectId(projectId);
+    }
+
+    /**
+     * 查询配置列表
+     */
+    public List<ConfigInfoDO> findListByCondition(Map<String, Object> condition) {
+        return configInfoDao.findListByCondition(condition);
     }
 
     /**

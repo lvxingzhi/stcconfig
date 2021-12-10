@@ -24,4 +24,12 @@ public class EnvInfoService {
         return envInfoDao.selectAll();
     }
 
+
+    /**
+     * 添加
+     */
+    public Integer add(EnvInfoDO envInfoDO){
+        return envInfoDao.insertSelective(envInfoDO);
+    }
+
 }

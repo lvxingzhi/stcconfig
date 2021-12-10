@@ -4,6 +4,7 @@ import cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Mapper
@@ -48,4 +49,10 @@ public interface ConfigInfoDao {
      *
      */
     List<ConfigInfoDO> findListByProjectId(Integer projectId);
+
+    /**
+     *
+     */
+    List<ConfigInfoDO> findListByCondition(Map<String, Object> condition);
+
 }

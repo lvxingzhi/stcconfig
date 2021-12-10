@@ -1,5 +1,6 @@
 package cn.notenextday.stcconfigserver.dto.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.util.Date;
@@ -28,12 +29,14 @@ public class EnvInfoDO {
      * 创建时间
      * 表字段: create_time
      */
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
      * 修改时间
      * 表字段: update_time
      */
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     /**
