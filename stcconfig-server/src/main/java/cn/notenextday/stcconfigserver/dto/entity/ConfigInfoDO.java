@@ -59,6 +59,12 @@ public class ConfigInfoDO {
     private Integer projectId;
 
     /**
+     * 环境ID
+     * 表字段: env_id
+     */
+    private Integer envId;
+
+    /**
      * 0 有效 1 失效
      * 表字段: delete_flag
      */

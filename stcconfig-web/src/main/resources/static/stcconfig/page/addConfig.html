@@ -85,28 +85,24 @@
 
         //监听提交
         form.on('submit(saveConfigBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '提交'
-            }, function () {
-                // 请求保存环境
-                $.ajax({
-                    url: "/config/add",
-                    data: JSON.stringify(data.field),
-                    type: "post",
-                    dataType: "json",
-                    headers: {'Content-Type': 'application/json;charset=utf-8'}, //接口json格式
-                    success: function (data) {
-                        // 关闭弹出层
-                        layer.close(index);
-                        var iframeIndex = parent.layer.getFrameIndex(window.name);
-                        parent.layer.close(iframeIndex);
-                    },
-                    error: function (data) {
-                        layer.alert(JSON.stringify(data), {
-                            title: data
-                        });
-                    }
-                });
+            // 请求保存环境
+            $.ajax({
+                url: "/config/add",
+                data: JSON.stringify(data.field),
+                type: "post",
+                dataType: "json",
+                headers: {'Content-Type': 'application/json;charset=utf-8'}, //接口json格式
+                success: function (data) {
+                    // 关闭弹出层
+                    layer.close(index);
+                    var iframeIndex = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(iframeIndex);
+                },
+                error: function (data) {
+                    layer.alert(JSON.stringify(data), {
+                        title: data
+                    });
+                }
             });
             return false;
         });

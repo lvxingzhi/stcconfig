@@ -43,7 +43,7 @@
         </fieldset>
         <script type="text/html" id="commonTableBar">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加配置</button>
             </div>
         </script>
         <table class="layui-hide" id="configTableId" lay-filter="configTableFilter"></table>
@@ -146,7 +146,7 @@
                     area: ['100%', '100%'],
                     content: 'editConfig.html',
                     end: function () {
-                        table.reload('projectTableId', {where: getParams()});
+                        table.reload('configTableId', {where: getParams()});
                     },
                     success: function (layero, index) {
                         //找到它的子窗口的body
@@ -154,16 +154,43 @@
                         //为子窗口元素赋值
                         body.find("input[name='id']").val(obj.data.id);
                         body.find("input[name='envId']").val(obj.data.envId);
-                        body.find("input[name='projectName']").val(obj.data.projectName);
+                        body.find("input[name='projectId']").val(obj.data.projectId);
+                        body.find("select[name='configType']").val(obj.data.configType);
+                        body.find("input[name='configFileName']").val(obj.data.configFileName);
+                        body.find("textarea[name='configFileContent']").val(obj.data.configFileContent);
+                        body.find("input[name='configIndex']").val(obj.data.configIndex);
                         body.find("input:radio[value='" + obj.data.deleteFlag + "']").attr('checked', 'true');
                     }
                 });
             } else if (obj.event === 'delete') {  // 监听添加操作
                 layer.confirm('失效确认', function (index) {
-                    deleteProject(obj.data.id);
+                    deleteConfig(obj.data.id);
                 });
             }
         });
+
+        /**
+         * 删除配置
+         */
+        function deleteConfig(id) {
+            $.ajax({
+                url: "/config/delete",
+                data: JSON.stringify({id: id}),
+                type: "post",
+                dataType: "json",
+                headers: {'Content-Type': 'application/json;charset=utf-8'}, //接口json格式
+                success: function (data) {
+                    // 关闭弹出层
+                    layer.msg("操作成功");
+                    table.reload('configTableId', {where: getParams()});
+                },
+                error: function (data) {
+                    layer.alert(JSON.stringify(data), {
+                        title: data
+                    });
+                }
+            });
+        }
     });
 </script>
 
