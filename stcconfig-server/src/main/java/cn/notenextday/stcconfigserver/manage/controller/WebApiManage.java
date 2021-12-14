@@ -3,14 +3,18 @@ package cn.notenextday.stcconfigserver.manage.controller;
 import cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO;
 import cn.notenextday.stcconfigserver.dto.entity.EnvInfoDO;
 import cn.notenextday.stcconfigserver.dto.entity.ProjectInfoDO;
+import cn.notenextday.stcconfigserver.enums.ConfigFileTypeEnum;
 import cn.notenextday.stcconfigserver.service.ConfigInfoService;
 import cn.notenextday.stcconfigserver.service.EnvInfoService;
 import cn.notenextday.stcconfigserver.service.ProjectInfoService;
+import cn.notenextday.stcconfigserver.util.TypeUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,10 +84,10 @@ public class WebApiManage {
      */
     public String getConfigList(JSONObject data) {
         Map<String, Object> condition = new HashMap<>();
-        if (Objects.nonNull(data.get("projectId"))) {
+        if (Objects.nonNull(data.get("projectId")) && Strings.isNotEmpty((String) data.get("projectId"))) {
             condition.put("projectId", data.get("projectId"));
         }
-        if (Objects.nonNull(data.get("configFileName"))) {
+        if (Objects.nonNull(data.get("configFileName")) && Strings.isNotEmpty((String) data.get("configFileName"))) {
             condition.put("configFileName", data.get("configFileName"));
         }
         List<ConfigInfoDO> configList = configInfoService.findListByCondition(condition);
@@ -104,6 +108,13 @@ public class WebApiManage {
      */
     public Integer addConfig(JSONObject data) {
         ConfigInfoDO configInfoDO = JSON.parseObject(data.toJSONString(), ConfigInfoDO.class);
+        configInfoDO.setConfigFileType(ConfigFileTypeEnum.getEnumByCode(TypeUtil.stringToInt(configInfoDO.getConfigType())).getName());
+        configInfoDO.setConfigFileVersion(1);
+        configInfoDO.setCreateTime(new Date());
+        configInfoDO.setConfigFileVersionPrevious(1);
+        if(Objects.isNull(configInfoDO.getConfigIndex())){
+            configInfoDO.setConfigIndex(1);
+        }
         Integer id = configInfoService.add(configInfoDO);
         return id;
     }
@@ -113,6 +124,10 @@ public class WebApiManage {
      */
     public Integer updateConfig(JSONObject data) {
         ConfigInfoDO configInfoDO = JSON.parseObject(data.toJSONString(), ConfigInfoDO.class);
+        ConfigInfoDO existConfigInfo = configInfoService.findById(configInfoDO.getId());
+        configInfoDO.setConfigFileVersion(existConfigInfo.getConfigFileVersion() + 1);
+        configInfoDO.setConfigFileVersionPrevious(existConfigInfo.getConfigFileVersion());
+        configInfoDO.setUpdateTime(new Date());
         Integer id = configInfoService.update(configInfoDO);
         return id;
     }
@@ -131,7 +146,7 @@ public class WebApiManage {
      */
     public String getProjectList(JSONObject data) {
         Map<String, Object> condition = new HashMap<>();
-        if (Objects.nonNull(data.get("envId"))) {
+        if (Objects.nonNull(data.get("envId"))&& Strings.isNotEmpty((String)data.get("envId"))) {
             condition.put("envId", data.get("envId"));
         }
         List<ProjectInfoDO> projectList = projectInfoService.findListByCondition(condition);

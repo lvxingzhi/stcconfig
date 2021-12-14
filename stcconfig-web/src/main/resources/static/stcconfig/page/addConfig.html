@@ -21,15 +21,46 @@
         <div class="layui-input-block">
             <input type="text" name="envId" lay-verify="required" lay-reqtext="环境ID不能为空" placeholder="请输入环境ID"
                    value="" class="layui-input">
-            <tip>环境ID</tip>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">项目名称</label>
+        <label class="layui-form-label required">项目ID</label>
         <div class="layui-input-block">
-            <input type="text" name="projectName" lay-verify="required" lay-reqtext="项目名称不能为空" placeholder="请输入项目名称"
+            <input type="text" name="projectId" lay-verify="required" lay-reqtext="项目ID不能为空" placeholder="请输入项目ID"
                    value="" class="layui-input">
-            <tip>填写项目名称</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">配置类型</label>
+        <div class="layui-input-block">
+            <select type="text" name="configType" lay-verify="required" lay-reqtext="配置类型不能为空" placeholder="请输入配置类型"
+                    value="" class="layui-select">
+                <option value="1">properties</option>
+                <option value="2">xml</option>
+                <option value="3">yaml</option>
+                <option value="4">txt</option>
+            </select>
+            <tip>文件后缀名,文件解析方式</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">文件名</label>
+        <div class="layui-input-block">
+            <input type="text" name="configFileName" lay-verify="required" lay-reqtext="文件名不能为空" placeholder="请输入文件名"
+                   value="" class="layui-input">
+            <tip>不用填写后缀名</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容</label>
+        <div class="layui-input-block">
+            <textarea type="text" name="configFileContent" value="" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">顺序</label>
+        <div class="layui-input-block">
+            <input type="text" name="configIndex" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -41,7 +72,7 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveProjectBtn">确认保存</button>
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveConfigBtn">确认保存</button>
         </div>
     </div>
 </div>
@@ -53,13 +84,13 @@
             $ = layui.$;
 
         //监听提交
-        form.on('submit(saveProjectBtn)', function (data) {
+        form.on('submit(saveConfigBtn)', function (data) {
             var index = layer.alert(JSON.stringify(data.field), {
                 title: '提交'
             }, function () {
                 // 请求保存环境
                 $.ajax({
-                    url: "/project/add",
+                    url: "/config/add",
                     data: JSON.stringify(data.field),
                     type: "post",
                     dataType: "json",
@@ -79,7 +110,6 @@
             });
             return false;
         });
-
     });
 
 </script>

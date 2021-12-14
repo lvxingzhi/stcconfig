@@ -41,7 +41,7 @@ public abstract class StcconfigRegisterManage implements CommandLineRunner {
         // 创建RootNode
         createRootNode();
         // 查询环境
-        List<EnvInfoDO> envInfoDOList = envInfoService.selectAll();
+        List<EnvInfoDO> envInfoDOList = envInfoService.selectAllEnable();
         if (CollectionUtils.isEmpty(envInfoDOList)) {
             logger.warn("[stcconfig配置初始化] DB环境未配置");
             return;

@@ -1,5 +1,7 @@
 package cn.notenextday.stcconfigserver.enums;
 
+import java.util.LinkedHashMap;
+
 /**
  * 配置类型和后缀名
  *
@@ -20,5 +22,31 @@ public enum ConfigFileTypeEnum {
         this.type = type;
         this.name = name;
     }
+
+    public static LinkedHashMap<Integer, String> getEnumMap() {
+        LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+        for (ConfigFileTypeEnum c : ConfigFileTypeEnum.values()) {
+            map.put(c.getType(), c.getName());
+        }
+        return map;
+    }
+
+    public static ConfigFileTypeEnum getEnumByCode(Integer type) {
+        for (ConfigFileTypeEnum obj : ConfigFileTypeEnum.values()) {
+            if (obj.getType().equals(type)) {
+                return obj;
+            }
+        }
+        return null;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
 
 }

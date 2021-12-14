@@ -42,5 +42,11 @@ public interface EnvInfoDao {
      *
      * @mbggenerated
      */
+    List<EnvInfoDO> selectAllEnable();
+
+    /**
+     *
+     * @mbggenerated
+     */
     List<EnvInfoDO> selectAll();
 }

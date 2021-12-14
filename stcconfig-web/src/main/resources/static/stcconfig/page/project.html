@@ -13,16 +13,15 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-
         <fieldset class="table-search-fieldset">
             <legend>搜索信息</legend>
             <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="" id="searchConfigForm">
+                <form class="layui-form layui-form-pane" action="" lay-filter="projectListForm">
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">环境ID</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="projectId" id="searchProjectId" autocomplete="off"
+                                <input type="text" name="envId" autocomplete="off"
                                        class="layui-input">
                             </div>
                         </div>
@@ -35,18 +34,16 @@
                 </form>
             </div>
         </fieldset>
-
-        <script type="text/html" id="toolbarDemo">
+        <script type="text/html" id="commonTableBar">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
             </div>
         </script>
+        <table class="layui-hide" id="projectTableId" lay-filter="projectTableFilter"></table>
 
-        <table class="layui-hide" id="configTableId" lay-filter="currentTableFilter"></table>
-
-        <script type="text/html" id="currentTableBar">
+        <script type="text/html" id="lineTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">失效</a>
         </script>
 
     </div>
@@ -59,12 +56,12 @@
             form = layui.form,
             table = layui.table;
         var layer = layui.layer;
-        let configTableConfig = {
-            elem: '#configTableId',
+        let projectTableConfig = {
+            elem: '#projectTableId',
             url: '/project/getProjectList',
             method: "post",
             contentType: "application/json;charset=utf-8",
-            where: {},
+            where: getParams(),
             parseData: function (res) {
                 return {
                     "code": res.code, //解析接口状态
@@ -73,7 +70,7 @@
                     "data": res.data //解析数据列表
                 };
             },
-            toolbar: '#toolbarDemo',
+            toolbar: '#commonTableBar',
             cols: [[
                 // {type: "checkbox", width: 50},
                 {field: 'id', width: 80, title: 'ID', sort: true},
@@ -90,7 +87,7 @@
                 },
                 {field: 'createTime', width: 100, title: '创建时间', sort: true},
                 {field: 'updateTime', width: 100, title: '修改时间', sort: true},
-                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+                {title: '操作', minWidth: 150, toolbar: '#lineTableBar', align: "center"}
             ]],
             defaultToolbar: ['filter'],
             limits: [10, 15, 20, 25, 50, 100],
@@ -98,20 +95,53 @@
             page: true,
             skin: 'line'
         }
-        table.render(configTableConfig);
+        table.render(projectTableConfig);
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            table.reload('configTableId');
+            table.reload('projectTableId', {where: getParams()});
             return false;
         });
 
         /**
          * toolbar监听事件
          */
-        table.on('toolbar(currentTableFilter)', function (obj) {
-            if (obj.event === 'add') {  // 监听添加操作
-                var index = layer.open({
+        table.on('tool(projectTableFilter)', function (obj) {
+            if (obj.event === 'edit') {
+                layer.open({
+                    title: '修改项目',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: 'editProject.html',
+                    end: function () {
+                        table.reload('projectTableId', {where: getParams()});
+                    },
+                    success: function (layero, index) {
+                        //找到它的子窗口的body
+                        var body = layer.getChildFrame('body', index);
+                        //为子窗口元素赋值
+                        body.find("input[name='id']").val(obj.data.id);
+                        body.find("input[name='envId']").val(obj.data.envId);
+                        body.find("input[name='projectName']").val(obj.data.projectName);
+                        body.find("input:radio[value='" + obj.data.deleteFlag + "']").attr('checked', 'true');
+                    }
+                });
+            } else if (obj.event === 'delete') {  // 监听添加操作
+                layer.confirm('失效确认', function (index) {
+                    deleteProject(obj.data.id);
+                });
+            }
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(projectTableFilter)', function (obj) {
+            if (obj.event === 'add') {
+                layer.open({
                     title: '添加项目',
                     type: 2,
                     shade: 0.2,
@@ -119,13 +149,10 @@
                     shadeClose: true,
                     area: ['100%', '100%'],
                     content: 'addProject.html',
-                    end: function(){
-                        table.reload('configTableId');
+                    end: function () {
+                        table.reload('projectTableId', {where: getParams()});
                     }
                 });
-                // $(window).on("resize", function () {
-                //     layer.full(index);
-                // });
             }
         });
 
@@ -134,29 +161,33 @@
             console.log(obj)
         });
 
-        table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data;
-            if (obj.event === 'edit') {
-                var index = layer.open({
-                    title: '编辑用户',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin: true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '../../page/table/edit.html',
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-                return false;
-            } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
-                });
-            }
-        });
+        /**
+         * 删除项目
+         */
+        function deleteProject(id) {
+            $.ajax({
+                url: "/project/delete",
+                data: JSON.stringify({id: id}),
+                type: "post",
+                dataType: "json",
+                headers: {'Content-Type': 'application/json;charset=utf-8'}, //接口json格式
+                success: function (data) {
+                    // 关闭弹出层
+                    layer.msg("操作成功");
+                    table.reload('projectTableId', {where: getParams()});
+                },
+                error: function (data) {
+                    layer.alert(JSON.stringify(data), {
+                        title: data
+                    });
+                }
+            });
+        }
+
+        function getParams() {
+            let result = form.val("projectListForm");
+            return result;
+        }
 
     });
 </script>

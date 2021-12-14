@@ -48,19 +48,19 @@
     from config_info
     where 1=1
     <if test="configType != null" >
-      and config_type = #{configType},
+      and config_type = #{configType}
     </if>
     <if test="configFileName != null" >
-      and config_file_name = #{configFileName},
+      and config_file_name = #{configFileName}
     </if>
     <if test="configFileType != null" >
-      and config_file_type = #{configFileType},
+      and config_file_type = #{configFileType}
     </if>
     <if test="projectId != null" >
-      and project_id = #{projectId},
+      and project_id = #{projectId}
     </if>
     <if test="deleteFlag != null" >
-      and delete_flag = #{deleteFlag},
+      and delete_flag = #{deleteFlag}
     </if>
   </select>
   <insert id="insert" parameterType="cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO" >

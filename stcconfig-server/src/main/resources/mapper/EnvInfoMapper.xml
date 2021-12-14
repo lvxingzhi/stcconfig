@@ -18,11 +18,16 @@
     from env_info
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectAllEnable" resultMap="BaseResultMap" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from env_info
+    where delete_flag = 0
+  </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select 'true' as QUERYID,
     <include refid="Base_Column_List" />
     from env_info
-    where delete_flag = 0;
   </select>
   <insert id="insert" parameterType="cn.notenextday.stcconfigserver.dto.entity.EnvInfoDO"  useGeneratedKeys="true" keyProperty="id">
     insert into env_info (id, env_name, delete_flag, 

@@ -1,7 +1,6 @@
 package cn.notenextday.stcconfigserver.service;
 
 import cn.notenextday.stcconfigserver.dao.EnvInfoDao;
-import cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO;
 import cn.notenextday.stcconfigserver.dto.entity.EnvInfoDO;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +19,18 @@ public class EnvInfoService {
     private EnvInfoDao envInfoDao;
 
     /**
+     * 查询环境列表(生效)
+     */
+    public List<EnvInfoDO> selectAllEnable() {
+        return envInfoDao.selectAllEnable();
+    }
+
+    /**
      * 查询环境列表
      */
     public List<EnvInfoDO> selectAll() {
         return envInfoDao.selectAll();
     }
-
 
     /**
      * 添加
