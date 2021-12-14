@@ -1,18 +1,21 @@
 package cn.notenextday.stcconfigserver.manage.controller;
-import java.util.Date;
 
 import cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO;
 import cn.notenextday.stcconfigserver.dto.entity.EnvInfoDO;
+import cn.notenextday.stcconfigserver.dto.entity.ProjectInfoDO;
 import cn.notenextday.stcconfigserver.service.ConfigInfoService;
 import cn.notenextday.stcconfigserver.service.EnvInfoService;
+import cn.notenextday.stcconfigserver.service.ProjectInfoService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Author xingzhi.lv
@@ -26,6 +29,8 @@ public class WebApiManage {
     private EnvInfoService envInfoService;
     @Resource
     private ConfigInfoService configInfoService;
+    @Resource
+    private ProjectInfoService projectInfoService;
 
     /**
      * 查询环境列表
@@ -49,8 +54,45 @@ public class WebApiManage {
      */
     public String getConfigList(JSONObject data) {
         Map<String, Object> condition = new HashMap<>();
+        if (Objects.nonNull(data.get("projectId"))) {
+            condition.put("projectId", data.get("projectId"));
+        }
+        if (Objects.nonNull(data.get("configFileName"))) {
+            condition.put("configFileName", data.get("configFileName"));
+        }
         List<ConfigInfoDO> configList = configInfoService.findListByCondition(condition);
         return JSON.toJSONString(configList);
+    }
+
+
+    /**
+     * 添加项目
+     */
+    public Integer addConfig(JSONObject data) {
+        ConfigInfoDO configInfoDO = JSON.parseObject(data.toJSONString(), ConfigInfoDO.class);
+        Integer id = configInfoService.add(configInfoDO);
+        return id;
+    }
+
+    /**
+     * 查询项目列表
+     */
+    public String getProjectList(JSONObject data) {
+        Map<String, Object> condition = new HashMap<>();
+        if (Objects.nonNull(data.get("envId"))) {
+            condition.put("envId", data.get("envId"));
+        }
+        List<ProjectInfoDO> projectList = projectInfoService.findListByCondition(condition);
+        return JSON.toJSONString(projectList);
+    }
+
+    /**
+     * 添加项目
+     */
+    public Integer addProject(JSONObject data) {
+        ProjectInfoDO projectInfoDO = JSON.parseObject(data.toJSONString(), ProjectInfoDO.class);
+        Integer id = projectInfoService.add(projectInfoDO);
+        return id;
     }
 
     public static void main(String[] args) {

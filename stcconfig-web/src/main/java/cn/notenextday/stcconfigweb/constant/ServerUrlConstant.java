@@ -18,4 +18,8 @@ public class ServerUrlConstant {
     public static final String SERVER_CONFIG_LIST = "/webapi/getConfigList";
     // 新增配置文件
     public static final String SERVER_ADD_CONFIG = "/webapi/addConfig";
+    // 项目列表
+    public static final String SERVER_PROJECT_LIST = "/webapi/getProjectList";
+    // 新增项目
+    public static final String SERVER_ADD_PROJECT = "/webapi/addProject";
 }

@@ -61,4 +61,37 @@ public class WebApiController {
         return webApiManage.getConfigList(json);
     }
 
+    /**
+     * 添加配置
+     */
+    @ResponseBody
+    @RequestMapping(value = "/addConfig", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String addConfig(@RequestBody JSONObject json) {
+        logger.info("添加配置");
+        webApiManage.addConfig(json);
+        return "成功";
+    }
+
+    /**
+     * 查询项目列表
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getProjectList", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String getProjectList(@RequestBody JSONObject json) {
+        logger.info("查询环境列表");
+        return webApiManage.getProjectList(json);
+    }
+
+    /**
+     * 添加项目
+     */
+    @ResponseBody
+    @RequestMapping(value = "/addProject", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String addProject(@RequestBody JSONObject json) {
+        logger.info("添加项目");
+        webApiManage.addProject(json);
+        return "成功";
+    }
+
+
 }

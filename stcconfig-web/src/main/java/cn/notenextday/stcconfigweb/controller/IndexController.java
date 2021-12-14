@@ -34,17 +34,10 @@ public class IndexController {
      */
     @ResponseBody
     @RequestMapping(value = "/menuList", produces = "application/json;charset=utf-8")
-    public Map<String, Object> menuList(@RequestBody JSONObject json) {
+    public Map<String, Object> menuList() {
         RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_ENV_LIST, json, String.class);
+        String response = restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_ENV_LIST, null, String.class);
         List<Map> envList = JSON.parseArray(response, Map.class);
-        List<Map<String, Object>> confListChild = new ArrayList<>();
-        Map<String, Object> conf1 = new HashMap<>();
-        conf1.put("title", "环境一");
-        conf1.put("href", "stcconfig/page/welcome-1.html");
-        conf1.put("icon", "fa fa-file-word-o");
-        conf1.put("target", "_self");
-        confListChild.add(conf1);
         Map<String, Object> homeInfo = new HashMap<>();
         homeInfo.put("title", "首页");
         homeInfo.put("href", "page/welcome-1.html?t=1");
@@ -62,40 +55,46 @@ public class IndexController {
         menuInfoTab.put("target", "_self");
         menuInfoTab.put("child", menuInfoChild);
         Map<String, Object> envMenu = new HashMap<>();
+        Map<String, Object> projectMenu = new HashMap<>();
         Map<String, Object> confMenu = new HashMap<>();
         Map<String, Object> historyMenu = new HashMap<>();
         Map<String, Object> userMenu = new HashMap<>();
         Map<String, Object> serverMenu = new HashMap<>();
         menuInfoChild.add(envMenu);
+        menuInfoChild.add(projectMenu);
         menuInfoChild.add(confMenu);
-        menuInfoChild.add(historyMenu);
-        menuInfoChild.add(userMenu);
-        menuInfoChild.add(serverMenu);
+//        menuInfoChild.add(historyMenu);
+//        menuInfoChild.add(userMenu);
+//        menuInfoChild.add(serverMenu);
         envMenu.put("title", "环境管理");
         envMenu.put("href", "stcconfig/page/env.html");
         envMenu.put("icon", "fa fa-files-o");
         envMenu.put("target", "_self");
 
-        confMenu.put("title", "环境管理");
-        confMenu.put("href", "stcconfig/page/env.html");
+        projectMenu.put("title", "项目管理");
+        projectMenu.put("href", "stcconfig/page/project.html");
+        projectMenu.put("icon", "fa fa-files-o");
+        projectMenu.put("target", "_self");
+
+        confMenu.put("title", "配置管理");
+        confMenu.put("href", "stcconfig/page/config.html");
         confMenu.put("icon", "fa fa-files-o");
         confMenu.put("target", "_self");
-        confMenu.put("child", confListChild);
 
-        historyMenu.put("title", "历史记录");
-        historyMenu.put("href", "page/menu.html");
-        historyMenu.put("icon", "fa fa-history");
-        historyMenu.put("target", "_self");
-
-        userMenu.put("title", "用户管理");
-        userMenu.put("href", "page/setting.html");
-        userMenu.put("icon", "fa fa-users");
-        userMenu.put("target", "_self");
-
-        serverMenu.put("title", "服务监控");
-        serverMenu.put("href", "page/table.html");
-        serverMenu.put("icon", "fa fa-warning");
-        serverMenu.put("target", "_self");
+//        historyMenu.put("title", "历史记录");
+//        historyMenu.put("href", "page/menu.html");
+//        historyMenu.put("icon", "fa fa-history");
+//        historyMenu.put("target", "_self");
+//
+//        userMenu.put("title", "用户管理");
+//        userMenu.put("href", "page/setting.html");
+//        userMenu.put("icon", "fa fa-users");
+//        userMenu.put("target", "_self");
+//
+//        serverMenu.put("title", "服务监控");
+//        serverMenu.put("href", "page/config.html");
+//        serverMenu.put("icon", "fa fa-warning");
+//        serverMenu.put("target", "_self");
 
 
         Map<String, Object> map = new HashMap<>();

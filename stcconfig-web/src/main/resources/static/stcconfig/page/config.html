@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
     <link rel="stylesheet" href="../../css/public.css" media="all">
+    <script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
 </head>
 <body>
 <div class="layuimini-container">
@@ -16,18 +17,20 @@
         <fieldset class="table-search-fieldset">
             <legend>搜索信息</legend>
             <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="">
+                <form class="layui-form layui-form-pane" action="" id="searchConfigForm">
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">项目ID</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="projectId" autocomplete="off" class="layui-input">
+                                <input type="text" name="projectId" id="searchProjectId" autocomplete="off"
+                                       class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">文件名称</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="configFileName" autocomplete="off" class="layui-input">
+                                <input type="text" name="configFileName" id="searchConfigFileName" autocomplete="off"
+                                       class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -56,79 +59,57 @@
     </div>
 </div>
 <script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../js/global.js" charset="utf-8"></script>
 <script>
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
-        loadConfigTable();
-
-        function loadConfigTable() {
-            table.render({
-                elem: '#configTableId',
-                // url: '../../api/table.json',
-                data: getData().data,
-                toolbar: '#toolbarDemo',
-                defaultToolbar: ['filter', 'exports', 'print', {
-                    title: '提示',
-                    layEvent: 'LAYTABLE_TIPS',
-                    icon: 'layui-icon-tips'
-                }],
-                cols: [[
-                    {type: "checkbox", width: 50},
-                    {field: 'id', width: 80, title: 'ID', sort: true},
-                    {field: 'configType', width: 80, title: '配置类型'},
-                    {field: 'configFileName', minWidth: 150, title: '配置文件名', sort: true},
-                    {field: 'configFileType', width: 100, title: '配置文件后缀类型'},
-                    {field: 'configFileVersion', width: 80, title: '配置文件版本号'},
-                    {field: 'configFileVersionPrevious', width: 80, title: '配置文件上一版本号', sort: true},
-                    {field: 'configIndex', width: 80, title: '配置文件次序', sort: true},
-                    {field: 'deleteFlag', width: 80, title: '有效失效'},
-                    {field: 'createTime', width: 80, title: '创建时间', sort: true},
-                    {field: 'updateTime', width: 80, title: '修改时间', sort: true},
-                    {field: 'projectId', width: 50, title: '项目ID', sort: true},
-                    {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
-                ]],
-                limits: [10, 15, 20, 25, 50, 100],
-                limit: 15,
-                page: true,
-                skin: 'line'
-            });
-
-            function getData() {
-                let data = {};
-                $.ajax({
-                    url: "/config/getConfigList",
-                    data: JSON.stringify({anything: 123}),
-                    type: "post",
-                    dataType: "json",
-                    async: false,
-                    headers: {'Content-Type': 'application/json;charset=utf-8'}, //接口json格式
-                    success: function (result) {
-                        data = result;
+        let configTableConfig = {
+            elem: '#configTableId',
+            url: '/config/getConfigList',
+            method: "post",
+            contentType: "application/json;charset=utf-8",
+            where: JSON.stringify(getParams()),
+            toolbar: '#toolbarDemo',
+            cols: [[
+                {type: "checkbox", width: 50},
+                {field: 'id', width: 80, title: 'ID', sort: true},
+                {field: 'projectId', width: 100, title: '项目ID', sort: true},
+                {field: 'configFileName', minWidth: 150, title: '配置文件名', sort: true},
+                {field: 'configFileType', width: 150, title: '配置文件后缀类型'},
+                {field: 'configFileVersion', width: 150, title: '配置文件版本号'},
+                {field: 'configFileVersionPrevious', width: 200, title: '配置文件上一版本号', sort: true},
+                {
+                    field: 'deleteFlag', width: 100, title: '状态', templet: function (d) {
+                        if (d && d.deleteFlag == 0) {
+                            return '生效'
+                        } else {
+                            return '失效'
+                        }
                     }
-                });
-                return data;
-            }
+                },
+                {field: 'createTime', width: 100, title: '创建时间', sort: true},
+                {field: 'updateTime', width: 100, title: '修改时间', sort: true},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+            ]],
+            defaultToolbar: ['filter'],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line'
+        }
+        table.render(configTableConfig);
+
+        function getParams() {
         }
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
-
-            //执行搜索重载
             table.reload('configTableId', {
-                page: {
-                    curr: 1
-                }
-                , where: {
-                    searchParams: result
-                }
-            }, 'data');
-
+                url: '/config/getConfigList',
+                where: JSON.stringify(data.field) //设定异步数据接口的额外参数
+            });
             return false;
         });
 
@@ -150,7 +131,7 @@
                     layer.full(index);
                 });
             } else if (obj.event === 'delete') {  // 监听删除操作
-                var checkStatus = table.checkStatus('configTableId')
+                var checkStatus = config.checkStatus('configTableId')
                     , data = checkStatus.data;
                 layer.alert(JSON.stringify(data));
             }

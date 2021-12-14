@@ -17,11 +17,19 @@
 <body>
 <div class="layui-form layuimini-form">
     <div class="layui-form-item">
-        <label class="layui-form-label required">环境名称</label>
+        <label class="layui-form-label required">环境ID</label>
         <div class="layui-input-block">
-            <input type="text" name="envName" lay-verify="required" lay-reqtext="环境名称不能为空" placeholder="请输入环境名称"
+            <input type="text" name="envId" lay-verify="required" lay-reqtext="环境ID不能为空" placeholder="请输入环境ID"
                    value="" class="layui-input">
-            <tip>填写环境名称</tip>
+            <tip>环境ID</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">项目名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="projectName" lay-verify="required" lay-reqtext="项目名称不能为空" placeholder="请输入项目名称"
+                   value="" class="layui-input">
+            <tip>填写项目名称</tip>
         </div>
     </div>
     <div class="layui-form-item">
@@ -33,7 +41,7 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveEnvBtn">确认保存</button>
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveProjectBtn">确认保存</button>
         </div>
     </div>
 </div>
@@ -45,13 +53,13 @@
             $ = layui.$;
 
         //监听提交
-        form.on('submit(saveEnvBtn)', function (data) {
+        form.on('submit(saveProjectBtn)', function (data) {
             var index = layer.alert(JSON.stringify(data.field), {
                 title: '提交'
             }, function () {
                 // 请求保存环境
                 $.ajax({
-                    url: "/env/add",
+                    url: "/project/add",
                     data: JSON.stringify(data.field),
                     type: "post",
                     dataType: "json",
@@ -69,7 +77,6 @@
                     }
                 });
             });
-
             return false;
         });
 

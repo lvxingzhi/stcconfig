@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 /**
- * 配置文件
+ * 项目
  *
  * @Author xingzhi.lv
  * @Version 2.0
@@ -25,18 +25,18 @@ import java.util.Map;
  * https://www.jianshu.com/p/4b7641399b5f
  */
 @Controller
-@RequestMapping("/config")
-public class ConfigController {
-    private static final Logger logger = LoggerFactory.getLogger(ConfigController.class);
+@RequestMapping("/project")
+public class ProjectController {
+    private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
     /**
      * 列表
      */
     @ResponseBody
-    @RequestMapping(value = "/getConfigList", produces = "application/json;charset=utf-8")
-    public Map<String, Object> getConfigList(@RequestBody JSONObject json) {
+    @RequestMapping(value = "/getProjectList", produces = "application/json;charset=utf-8")
+    public Map<String, Object> getProjectList(@RequestBody JSONObject json) {
         RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_CONFIG_LIST, json, String.class);
+        String response = restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_PROJECT_LIST, json, String.class);
         List<Map> envList = JSON.parseArray(response, Map.class);
         Map<String, Object> map = new HashMap<>();
         map.put("code", 0);
@@ -53,7 +53,7 @@ public class ConfigController {
     @RequestMapping(value = "/add", produces = "application/json;charset=utf-8")
     public Map<String, Object> add(@RequestBody JSONObject json) {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_ADD_CONFIG, json, String.class);
+        restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_ADD_PROJECT, json, String.class);
         Map<String, Object> map = new HashMap<>();
         map.put("code", 0);
         map.put("msg", "成功");

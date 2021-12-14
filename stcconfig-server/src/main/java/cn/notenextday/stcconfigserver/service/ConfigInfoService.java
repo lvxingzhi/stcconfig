@@ -36,6 +36,13 @@ public class ConfigInfoService {
     }
 
     /**
+     * 添加
+     */
+    public Integer add(ConfigInfoDO configInfoDO) {
+        return configInfoDao.insertSelective(configInfoDO);
+    }
+
+    /**
      * 查询配置详情
      */
     public ConfigInfoDO findById(Integer configId) {
