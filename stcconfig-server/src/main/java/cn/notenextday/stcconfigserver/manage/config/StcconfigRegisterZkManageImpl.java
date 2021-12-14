@@ -201,6 +201,9 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
                     // 创建ZK项目
                     String zkProjectNodePath = getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), null);
                     ZookeeperClientUtil.createNode(zkProjectNodePath, JSON.toJSONBytes(new NodeDTO(zkProjectNodePath, dbProjectInfoDO.getId(), DEFAULT_VERSION)), CreateMode.PERSISTENT);
+                    if(CollectionUtils.isEmpty(getProConfigMap().get(dbProjectInfoDO.getId()))){
+                        continue;
+                    }
                     for (ConfigInfoDO dbConfigInfoDO : getProConfigMap().get(dbProjectInfoDO.getId())) {
                         // 创建ZK配置
                         String zkConfigNodePath = getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), dbConfigInfoDO.getId());
@@ -208,6 +211,9 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
                     }
                 } else {
                     List<NodeDTO> zkConfigNodeList = ZookeeperClientUtil.getChildrenNodes(getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), null));
+                    if(CollectionUtils.isEmpty(getProConfigMap().get(dbProjectInfoDO.getId()))){
+                        continue;
+                    }
                     for (ConfigInfoDO dbConfigInfoDO : getProConfigMap().get(dbProjectInfoDO.getId())) {
                         if (CollectionUtils.isEmpty(zkConfigNodeList.stream().filter(s -> s.getData().equals(TypeUtil.intToString(dbConfigInfoDO.getId()))).collect(Collectors.toList()))) {
                             // 创建ZK配置
