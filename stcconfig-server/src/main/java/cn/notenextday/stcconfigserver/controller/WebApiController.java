@@ -41,6 +41,16 @@ public class WebApiController {
     }
 
     /**
+     * 查询环境详情
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getEnvInfo", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String getEnvInfo(@RequestBody JSONObject json) {
+        logger.info("查询环境详情");
+        return webApiManage.getEnvInfo(json);
+    }
+
+    /**
      * 添加环境
      */
     @ResponseBody
@@ -48,6 +58,28 @@ public class WebApiController {
     public String addEnv(@RequestBody JSONObject json) {
         logger.info("添加环境");
         webApiManage.addEnv(json);
+        return "成功";
+    }
+
+    /**
+     * 修改环境
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateEnv", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String updateEnv(@RequestBody JSONObject json) {
+        logger.info("修改环境");
+        webApiManage.updateEnv(json);
+        return "成功";
+    }
+
+    /**
+     * 删除环境
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteEnv", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String deleteEnv(@RequestBody JSONObject json) {
+        logger.info("删除环境");
+        webApiManage.deleteEnv(json);
         return "成功";
     }
 
@@ -62,6 +94,16 @@ public class WebApiController {
     }
 
     /**
+     * 查询配置文件详情
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getConfigInfo", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String getConfigInfo(@RequestBody JSONObject json) {
+        logger.info("查询环境详情");
+        return webApiManage.getConfigInfo(json);
+    }
+
+    /**
      * 添加配置
      */
     @ResponseBody
@@ -73,13 +115,45 @@ public class WebApiController {
     }
 
     /**
+     * 修改配置
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateConfig", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String updateConfig(@RequestBody JSONObject json) {
+        logger.info("修改配置");
+        webApiManage.updateConfig(json);
+        return "成功";
+    }
+
+    /**
+     * 删除配置
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteConfig", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String deleteConfig(@RequestBody JSONObject json) {
+        logger.info("删除配置");
+        webApiManage.deleteConfig(json);
+        return "成功";
+    }
+
+    /**
      * 查询项目列表
      */
     @ResponseBody
     @RequestMapping(value = "/getProjectList", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
     public String getProjectList(@RequestBody JSONObject json) {
-        logger.info("查询环境列表");
+        logger.info("查询项目列表");
         return webApiManage.getProjectList(json);
+    }
+
+    /**
+     * 查询项目详情
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getProjectInfo", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String getProjectInfo(@RequestBody JSONObject json) {
+        logger.info("查询项目详情");
+        return webApiManage.getProjectInfo(json);
     }
 
     /**
@@ -90,6 +164,28 @@ public class WebApiController {
     public String addProject(@RequestBody JSONObject json) {
         logger.info("添加项目");
         webApiManage.addProject(json);
+        return "成功";
+    }
+
+    /**
+     * 修改项目
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateProject", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String updateProject(@RequestBody JSONObject json) {
+        logger.info("修改项目");
+        webApiManage.updateProject(json);
+        return "成功";
+    }
+
+    /**
+     * 删除项目
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteProject", produces = HttpConstant.HTTP_CONTENT_TYPE_UTF8)
+    public String deleteProject(@RequestBody JSONObject json) {
+        logger.info("添加项目");
+        webApiManage.deleteProject(json);
         return "成功";
     }
 

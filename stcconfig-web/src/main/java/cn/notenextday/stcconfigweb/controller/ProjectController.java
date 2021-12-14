@@ -47,6 +47,22 @@ public class ProjectController {
     }
 
     /**
+     * 详情
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getProjectInfo", produces = "application/json;charset=utf-8")
+    public Map<String, Object> getProjectInfo(@RequestBody JSONObject json) {
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_PROJECT_INFO, json, String.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 0);
+        map.put("msg", "成功");
+        map.put("count", 1);
+        map.put("data", response);
+        return map;
+    }
+
+    /**
      * 新增
      */
     @ResponseBody
@@ -54,6 +70,34 @@ public class ProjectController {
     public Map<String, Object> add(@RequestBody JSONObject json) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_ADD_PROJECT, json, String.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 0);
+        map.put("msg", "成功");
+        return map;
+    }
+
+    /**
+     * 修改
+     */
+    @ResponseBody
+    @RequestMapping(value = "/update", produces = "application/json;charset=utf-8")
+    public Map<String, Object> update(@RequestBody JSONObject json) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_UPDATE_PROJECT, json, String.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 0);
+        map.put("msg", "成功");
+        return map;
+    }
+
+    /**
+     * 删除
+     */
+    @ResponseBody
+    @RequestMapping(value = "/delete", produces = "application/json;charset=utf-8")
+    public Map<String, Object> delete(@RequestBody JSONObject json) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_DELETE_PROJECT, json, String.class);
         Map<String, Object> map = new HashMap<>();
         map.put("code", 0);
         map.put("msg", "成功");

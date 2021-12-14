@@ -5,6 +5,7 @@ import cn.notenextday.stcconfigserver.dto.entity.ConfigInfoDO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,24 @@ public class ConfigInfoService {
      */
     public Integer add(ConfigInfoDO configInfoDO) {
         return configInfoDao.insertSelective(configInfoDO);
+    }
+
+    /**
+     * 修改
+     */
+    public Integer update(ConfigInfoDO configInfoDO) {
+        return configInfoDao.updateByPrimaryKeyWithBLOBs(configInfoDO);
+    }
+
+    /**
+     * 删除
+     */
+    public Integer delete(Integer configId) {
+        ConfigInfoDO configInfoDO = new ConfigInfoDO();
+        configInfoDO.setId(configId);
+        configInfoDO.setDeleteFlag(1);
+        configInfoDO.setUpdateTime(new Date());
+        return configInfoDao.updateByPrimaryKeySelective(configInfoDO);
     }
 
     /**

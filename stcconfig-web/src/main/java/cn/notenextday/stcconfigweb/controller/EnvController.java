@@ -30,7 +30,7 @@ public class EnvController {
     private static final Logger logger = LoggerFactory.getLogger(EnvController.class);
 
     /**
-     * 环境列表
+     * 列表
      */
     @ResponseBody
     @RequestMapping(value = "/getEnvList", produces = "application/json;charset=utf-8")
@@ -47,13 +47,57 @@ public class EnvController {
     }
 
     /**
-     * 新增环境
+     * 详情
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getEnvInfo", produces = "application/json;charset=utf-8")
+    public Map<String, Object> getEnvInfo(@RequestBody JSONObject json) {
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_ENV_INFO, json, String.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 0);
+        map.put("msg", "成功");
+        map.put("count", 1);
+        map.put("data", response);
+        return map;
+    }
+
+    /**
+     * 新增
      */
     @ResponseBody
     @RequestMapping(value = "/add", produces = "application/json;charset=utf-8")
     public Map<String, Object> add(@RequestBody JSONObject json) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_ADD_ENV, json, String.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 0);
+        map.put("msg", "成功");
+        return map;
+    }
+
+    /**
+     * 修改
+     */
+    @ResponseBody
+    @RequestMapping(value = "/update", produces = "application/json;charset=utf-8")
+    public Map<String, Object> update(@RequestBody JSONObject json) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_UPDATE_ENV, json, String.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 0);
+        map.put("msg", "成功");
+        return map;
+    }
+
+    /**
+     * 删除
+     */
+    @ResponseBody
+    @RequestMapping(value = "/delete", produces = "application/json;charset=utf-8")
+    public Map<String, Object> delete(@RequestBody JSONObject json) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(ServerUrlConstant.BASE_URL + ServerUrlConstant.SERVER_DELETE_ENV, json, String.class);
         Map<String, Object> map = new HashMap<>();
         map.put("code", 0);
         map.put("msg", "成功");

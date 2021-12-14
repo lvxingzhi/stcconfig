@@ -11,7 +11,6 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +40,38 @@ public class WebApiManage {
     }
 
     /**
+     * 查询环境详情
+     */
+    public String getEnvInfo(JSONObject data) {
+        EnvInfoDO envInfoDO = JSON.parseObject(data.toJSONString(), EnvInfoDO.class);
+        EnvInfoDO envInfo = envInfoService.findById(envInfoDO.getId());
+        return JSON.toJSONString(envInfo);
+    }
+
+    /**
      * 添加环境
      */
     public Integer addEnv(JSONObject data) {
         EnvInfoDO envInfoDO = JSON.parseObject(data.toJSONString(), EnvInfoDO.class);
         Integer id = envInfoService.add(envInfoDO);
+        return id;
+    }
+
+    /**
+     * 修改环境
+     */
+    public Integer updateEnv(JSONObject data) {
+        EnvInfoDO envInfoDO = JSON.parseObject(data.toJSONString(), EnvInfoDO.class);
+        Integer id = envInfoService.update(envInfoDO);
+        return id;
+    }
+
+    /**
+     * 删除环境
+     */
+    public Integer deleteEnv(JSONObject data) {
+        EnvInfoDO envInfoDO = JSON.parseObject(data.toJSONString(), EnvInfoDO.class);
+        Integer id = envInfoService.delete(envInfoDO.getId());
         return id;
     }
 
@@ -64,6 +90,14 @@ public class WebApiManage {
         return JSON.toJSONString(configList);
     }
 
+    /**
+     * 查询配置文件详情
+     */
+    public String getConfigInfo(JSONObject data) {
+        ConfigInfoDO configInfoDO = JSON.parseObject(data.toJSONString(), ConfigInfoDO.class);
+        ConfigInfoDO configInfo = configInfoService.findById(configInfoDO.getId());
+        return JSON.toJSONString(configInfo);
+    }
 
     /**
      * 添加项目
@@ -71,6 +105,24 @@ public class WebApiManage {
     public Integer addConfig(JSONObject data) {
         ConfigInfoDO configInfoDO = JSON.parseObject(data.toJSONString(), ConfigInfoDO.class);
         Integer id = configInfoService.add(configInfoDO);
+        return id;
+    }
+
+    /**
+     * 添加项目
+     */
+    public Integer updateConfig(JSONObject data) {
+        ConfigInfoDO configInfoDO = JSON.parseObject(data.toJSONString(), ConfigInfoDO.class);
+        Integer id = configInfoService.update(configInfoDO);
+        return id;
+    }
+
+    /**
+     * 添加项目
+     */
+    public Integer deleteConfig(JSONObject data) {
+        ConfigInfoDO configInfoDO = JSON.parseObject(data.toJSONString(), ConfigInfoDO.class);
+        Integer id = configInfoService.delete(configInfoDO.getId());
         return id;
     }
 
@@ -87,6 +139,15 @@ public class WebApiManage {
     }
 
     /**
+     * 查询项目列表
+     */
+    public String getProjectInfo(JSONObject data) {
+        ProjectInfoDO projectInfoDO = JSON.parseObject(data.toJSONString(), ProjectInfoDO.class);
+        ProjectInfoDO projectInfo = projectInfoService.findById(projectInfoDO.getId());
+        return JSON.toJSONString(projectInfo);
+    }
+
+    /**
      * 添加项目
      */
     public Integer addProject(JSONObject data) {
@@ -95,15 +156,22 @@ public class WebApiManage {
         return id;
     }
 
-    public static void main(String[] args) {
-        EnvInfoDO envInfoDO = new EnvInfoDO();
-        envInfoDO.setId(0);
-        envInfoDO.setEnvName("");
-        envInfoDO.setDeleteFlag(0);
-        envInfoDO.setCreateTime(new Date());
-        envInfoDO.setUpdateTime(new Date());
-        envInfoDO.setParentId(0);
-        System.out.println(JSON.toJSONString(envInfoDO));
+    /**
+     * 修改项目
+     */
+    public Integer updateProject(JSONObject data) {
+        ProjectInfoDO projectInfoDO = JSON.parseObject(data.toJSONString(), ProjectInfoDO.class);
+        Integer id = projectInfoService.update(projectInfoDO);
+        return id;
+    }
+
+    /**
+     * 删除项目
+     */
+    public Integer deleteProject(JSONObject data) {
+        ProjectInfoDO projectInfoDO = JSON.parseObject(data.toJSONString(), ProjectInfoDO.class);
+        Integer id = projectInfoService.delete(projectInfoDO.getId());
+        return id;
     }
 
 }
