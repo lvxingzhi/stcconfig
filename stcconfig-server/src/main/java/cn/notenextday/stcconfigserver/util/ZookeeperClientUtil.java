@@ -123,10 +123,8 @@ public class ZookeeperClientUtil {
     public static void deleteSubNode(String nodeStr) throws IOException, KeeperException, InterruptedException {
         String nodePath = nodeStr;
         //打印当前节点路径
-        System.out.println("Node Path >>>>>>>>> [" + nodePath + " ]");
         if (zookeeper.getChildren(nodePath, false).size() == 0) {
             //删除节点
-            System.out.println("Deleting Node Path >>>>>>>>> [" + nodePath + " ]");
             zookeeper.delete(nodePath,zookeeper.exists(nodePath, false).getVersion());
         } else {
             //递归查找非空子节点
