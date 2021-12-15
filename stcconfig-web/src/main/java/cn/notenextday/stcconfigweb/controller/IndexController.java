@@ -40,7 +40,7 @@ public class IndexController {
         List<Map> envList = JSON.parseArray(response, Map.class);
         Map<String, Object> homeInfo = new HashMap<>();
         homeInfo.put("title", "首页");
-        homeInfo.put("href", "page/welcome-1.html?t=1");
+        homeInfo.put("href", "stcconfig/page/welcome.html?t=1");
         Map<String, Object> logoInfo = new HashMap<>();
         logoInfo.put("title", "STC CONFIG");
         logoInfo.put("image", "stcconfig/images/logo.jpg");
@@ -73,12 +73,12 @@ public class IndexController {
 
         projectMenu.put("title", "项目管理");
         projectMenu.put("href", "stcconfig/page/project.html");
-        projectMenu.put("icon", "fa fa-files-o");
+        projectMenu.put("icon", "fa fa-file");
         projectMenu.put("target", "_self");
 
         confMenu.put("title", "配置管理");
         confMenu.put("href", "stcconfig/page/config.html");
-        confMenu.put("icon", "fa fa-files-o");
+        confMenu.put("icon", "fa fa-file-word-o");
         confMenu.put("target", "_self");
 
 //        historyMenu.put("title", "历史记录");
