@@ -7,6 +7,9 @@ import cn.notenextday.stcconfigclient.container.BeanNode;
 import cn.notenextday.stcconfigclient.container.ConfigContainer;
 import cn.notenextday.stcconfigclient.container.FieldNode;
 import cn.notenextday.stcconfigclient.dto.NodeDTO;
+import cn.notenextday.stcconfigclient.enums.ConfigFileTypeEnum;
+import cn.notenextday.stcconfigclient.util.FileReadToTypeUtil;
+import cn.notenextday.stcconfigclient.util.TypeUtil;
 import cn.notenextday.stcconfigclient.util.ZookeeperClientUtil;
 import cn.notenextday.stcconfigclient.watcher.NodeActionWatcher;
 import org.apache.commons.io.FileUtils;
@@ -14,9 +17,11 @@ import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.YamlMapFactoryBean;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -30,6 +35,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 配置文件管理核心
@@ -70,7 +76,7 @@ public class PullConfigFileManage implements CommandLineRunner {
         pullConfigFile();
         // 根据容器(bean, 配置), 更新bean中的变量值
         Map<String, BeanNode> beanMap = BeanContainer.container().getDataMap();
-        Map<String, Map<String, String>> configMap = ConfigContainer.container().getDataMap();
+        Map<String, Map<String, Object>> configMap = ConfigContainer.container().getDataMap();
         if (beanMap.size() < 0) {
             return;
         }
@@ -81,8 +87,8 @@ public class PullConfigFileManage implements CommandLineRunner {
                 return;
             }
             for (FieldNode fieldNode : fieldNodeList) {
-                Map<String, String> config = configMap.get(fieldNode.getAnnoFileName());
-                String configValue = config.get(fieldNode.getAnnokeyName());
+                Map<String, Object> config = configMap.get(fieldNode.getAnnoFileName());
+                String configValue = TypeUtil.ObjToString(config.get(fieldNode.getAnnokeyName()));
                 BeanMap springBeanMap = BeanMap.create(object);
                 springBeanMap.put(fieldNode.getFieldName(), configValue);
                 logger.info("[stcconfig][client]赋值,fieldName:{}, value:{}", fieldNode.getFieldName(), configValue);
@@ -107,31 +113,24 @@ public class PullConfigFileManage implements CommandLineRunner {
                 URL remoteUrl = new URL(nodeDTO.getPath());
                 File localTmpFile = new File(stcconfigFilePath + nodeDTO.getFileName());
                 FileUtils.copyURLToFile(remoteUrl, localTmpFile);
-                // 读取配置文件内容到配置容器
-                try (
-                        FileInputStream fileInputStream = new FileInputStream(localTmpFile);
-                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-                ) {
-                    Map<String, String> dataMap = new HashMap<>();
-                    String configKeyAndValue = "";
-                    while ((configKeyAndValue = bufferedReader.readLine()) != null) {
-                        logger.info("[stcconfig][client] 读取配置: {}", configKeyAndValue);
-                        // TODO 判断文件后缀名决定解析方式
-                        if (Strings.isEmpty(configKeyAndValue)) {
-                            continue;
-                        }
-                        int index = configKeyAndValue.indexOf("=");
-                        if (index == -1) {
-                            continue;
-                        }
-                        String key = configKeyAndValue.substring(0, index);
-                        String value = configKeyAndValue.substring(index+1);
-                        dataMap.put(key, value);
-                    }
-                    ConfigContainer.container().getDataMap().put(nodeDTO.getFileName(), dataMap);
-                } catch (Exception ex) {
-                    logger.error("[stcconfig][client] 读取配置文件失败");
+                int pointIndex = nodeDTO.getFileName().indexOf(".");
+                ConfigFileTypeEnum configFileTypeEnum = ConfigFileTypeEnum.getEnumByName(nodeDTO.getFileName().substring(pointIndex));
+                if (Objects.isNull(configFileTypeEnum)) {
+                    logger.error("[stcconfig][client]文件解析失败,不支持该类型:{}{}", stcconfigFilePath, nodeDTO.getFileName());
+                    continue;
                 }
+                // 读取配置文件内容到配置容器
+                Map<String, Object> dataMap = new HashMap<>();
+                if (ConfigFileTypeEnum.YAML.equals(configFileTypeEnum)) {
+                    dataMap = FileReadToTypeUtil.yaml2Map(stcconfigFilePath + nodeDTO.getFileName());
+                }
+                if (ConfigFileTypeEnum.PROPERTIES.equals(configFileTypeEnum)) {
+                    dataMap = FileReadToTypeUtil.properties2Map(stcconfigFilePath + nodeDTO.getFileName());
+                }
+                if (ConfigFileTypeEnum.TXT.equals(configFileTypeEnum)) {
+                    dataMap = FileReadToTypeUtil.properties2Map(stcconfigFilePath + nodeDTO.getFileName());
+                }
+                ConfigContainer.container().getDataMap().put(nodeDTO.getFileName(), dataMap);
             }
         } catch (IOException e) {
             logger.error("[stcconfig][client] 请求服务器拉取配置文件失败");
@@ -152,4 +151,6 @@ public class PullConfigFileManage implements CommandLineRunner {
         }
         this.init();
     }
+
+
 }

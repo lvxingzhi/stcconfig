@@ -21,7 +21,7 @@ public class ConfigContainer {
      * key: 配置文件名
      * value: 配置集合
      */
-    private volatile Map<String, Map<String, String>> dataMap = new HashMap<>();
+    private volatile Map<String, Map<String, Object>> dataMap = new HashMap<>();
 
     /**
      * 获取容器
@@ -30,7 +30,7 @@ public class ConfigContainer {
         return configContainer;
     }
 
-    public Map<String, Map<String, String>> getDataMap() {
+    public Map<String, Map<String, Object>> getDataMap() {
         return dataMap;
     }
 

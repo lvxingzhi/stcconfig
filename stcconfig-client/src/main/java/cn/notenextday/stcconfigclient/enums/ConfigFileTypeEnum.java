@@ -1,4 +1,4 @@
-package cn.notenextday.stcconfigserver.enums;
+package cn.notenextday.stcconfigclient.enums;
 
 import java.util.LinkedHashMap;
 
@@ -33,6 +33,15 @@ public enum ConfigFileTypeEnum {
     public static ConfigFileTypeEnum getEnumByCode(Integer type) {
         for (ConfigFileTypeEnum obj : ConfigFileTypeEnum.values()) {
             if (obj.getType().equals(type)) {
+                return obj;
+            }
+        }
+        return null;
+    }
+
+    public static ConfigFileTypeEnum getEnumByName(String name) {
+        for (ConfigFileTypeEnum obj : ConfigFileTypeEnum.values()) {
+            if (obj.getName().equals(name)) {
                 return obj;
             }
         }

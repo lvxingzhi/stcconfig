@@ -37,9 +37,8 @@
             <select type="text" name="configType" lay-verify="required" lay-reqtext="配置类型不能为空" placeholder="请输入配置类型"
                     value="" class="layui-select">
                 <option value="1">properties</option>
-                <option value="2">xml</option>
-                <option value="3">yaml</option>
-                <option value="4">txt</option>
+                <option value="2">yaml</option>
+                <option value="3">txt</option>
             </select>
             <tip>文件后缀名,文件解析方式</tip>
         </div>
@@ -49,7 +48,7 @@
         <div class="layui-input-block">
             <input type="text" name="configFileName" lay-verify="required" lay-reqtext="文件名不能为空" placeholder="请输入文件名"
                    value="" class="layui-input">
-            <tip>不用填写后缀名</tip>
+            <tip>后缀名填写完整(如: config.properties)</tip>
         </div>
     </div>
     <div class="layui-form-item">

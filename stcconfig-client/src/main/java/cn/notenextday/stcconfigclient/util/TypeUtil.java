@@ -20,6 +20,19 @@ public class TypeUtil {
 
     /**
      * 类型转换-null返回
+     * Object-String
+     *
+     * @return
+     */
+    public static String ObjToString(Object obj) {
+        if (Objects.isNull(obj)) {
+            return null;
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 类型转换-null返回
      * long-int
      *
      * @return

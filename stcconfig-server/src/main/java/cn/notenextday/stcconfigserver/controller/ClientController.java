@@ -48,7 +48,7 @@ public class ClientController {
         try {
             // 查询配置信息
             HttpHeaders headers = new HttpHeaders();
-            String fileName = URLEncoder.encode(configInfoDO.getConfigFileName(), StandardCharsets.UTF_8.name());
+            String fileName = URLEncoder.encode(configInfoDO.getConfigFileName()+"."+configInfoDO.getConfigFileType(), StandardCharsets.UTF_8.name());
             headers.add(HttpHeaders.CONTENT_DISPOSITION, FILE_CONTENT_CONSTANT + fileName);
             return new ResponseEntity(configInfoDO.getConfigFileContent().getBytes(StandardCharsets.UTF_8), headers, HttpStatus.OK);
         } catch (UnsupportedEncodingException e) {
