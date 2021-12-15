@@ -6,11 +6,12 @@
     <result column="account_name" property="accountName" jdbcType="VARCHAR" />
     <result column="account_password" property="accountPassword" jdbcType="VARCHAR" />
     <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+    <result column="enable_flag" property="enableFlag" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, account_name, account_password, delete_flag, create_time, update_time
+    id, account_name, account_password, delete_flag, enable_flag, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 'true' as QUERYID,
@@ -20,10 +21,10 @@
   </select>
   <insert id="insert" parameterType="cn.notenextday.stcconfigserver.dto.entity.UserInfoDO" >
     insert into user_info (id, account_name, account_password, 
-      delete_flag, create_time, update_time
+      delete_flag, enable_flag, create_time, update_time
       )
     values (#{id,jdbcType=INTEGER}, #{accountName,jdbcType=VARCHAR}, #{accountPassword,jdbcType=VARCHAR}, 
-      #{deleteFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{deleteFlag,jdbcType=INTEGER}, #{enableFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.notenextday.stcconfigserver.dto.entity.UserInfoDO" >
@@ -40,6 +41,9 @@
       </if>
       <if test="deleteFlag != null" >
         delete_flag,
+      </if>
+      <if test="enableFlag != null" >
+        enable_flag,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -61,6 +65,9 @@
       <if test="deleteFlag != null" >
         #{deleteFlag,jdbcType=INTEGER},
       </if>
+      <if test="enableFlag != null" >
+        #{enableFlag,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -81,6 +88,9 @@
       <if test="deleteFlag != null" >
         delete_flag = #{deleteFlag,jdbcType=INTEGER},
       </if>
+      <if test="enableFlag != null" >
+        enable_flag = #{enableFlag,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -95,6 +105,7 @@
     set account_name = #{accountName,jdbcType=VARCHAR},
       account_password = #{accountPassword,jdbcType=VARCHAR},
       delete_flag = #{deleteFlag,jdbcType=INTEGER},
+      enable_flag = #{enableFlag,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

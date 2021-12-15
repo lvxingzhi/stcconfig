@@ -78,8 +78,8 @@
                 {field: 'configFileVersion', width: 150, title: '配置文件版本号'},
                 {field: 'configFileVersionPrevious', width: 200, title: '配置文件上一版本号', sort: true},
                 {
-                    field: 'deleteFlag', width: 100, title: '状态', templet: function (d) {
-                        if (d && d.deleteFlag == 0) {
+                    field: 'enableFlag', width: 100, title: '状态', templet: function (d) {
+                        if (d && d.enableFlag == 0) {
                             return '生效'
                         } else {
                             return '失效'
@@ -150,16 +150,19 @@
                     },
                     success: function (layero, index) {
                         //找到它的子窗口的body
-                        var body = layer.getChildFrame('body', index);
-                        //为子窗口元素赋值
-                        body.find("input[name='id']").val(obj.data.id);
-                        body.find("input[name='envId']").val(obj.data.envId);
-                        body.find("input[name='projectId']").val(obj.data.projectId);
-                        body.find("select[name='configType']").val(obj.data.configType);
-                        body.find("input[name='configFileName']").val(obj.data.configFileName);
-                        body.find("textarea[name='configFileContent']").val(obj.data.configFileContent);
-                        body.find("input[name='configIndex']").val(obj.data.configIndex);
-                        body.find("input:radio[value='" + obj.data.deleteFlag + "']").attr('checked', 'true');
+                        let body = layer.getChildFrame('body', index);
+                        let iframeWin = window[layero.find('iframe')[0]['name']];
+                        let data = {
+                            "id": obj.data.id
+                            , "envId": obj.data.envId
+                            , "projectId": obj.data.projectId
+                            , "configType": obj.data.configType
+                            , "configFileName": obj.data.configFileName
+                            , "configFileContent": obj.data.configFileContent
+                            , "configIndex": obj.data.configIndex
+                            , "enableFlag": obj.data.enableFlag
+                        };
+                        iframeWin.initData(data);
                     }
                 });
             } else if (obj.event === 'delete') {  // 监听添加操作

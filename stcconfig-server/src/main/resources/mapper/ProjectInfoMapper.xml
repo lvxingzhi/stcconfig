@@ -5,13 +5,14 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
         <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER"/>
+        <result column="enable_flag" property="enableFlag" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="env_id" property="envId" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
         id
-        , project_name, delete_flag, create_time, update_time, env_id
+        , project_name, delete_flag, enable_flag, create_time, update_time, env_id
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select 'true' as QUERYID,
@@ -38,9 +39,9 @@
     </select>
 
     <insert id="insert" parameterType="cn.notenextday.stcconfigserver.dto.entity.ProjectInfoDO">
-        insert into project_info (id, project_name, delete_flag,
+        insert into project_info (id, project_name, delete_flag, enable_flag,
                                   create_time, update_time, env_id)
-        values (#{id,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=INTEGER},
+        values (#{id,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=INTEGER}, #{enableFlag,jdbcType=INTEGER},
                 #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, {envId, jdbcType = INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="cn.notenextday.stcconfigserver.dto.entity.ProjectInfoDO">
@@ -54,6 +55,9 @@
             </if>
             <if test="deleteFlag != null">
                 delete_flag,
+            </if>
+            <if test="enableFlag != null">
+                enable_flag,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -75,6 +79,9 @@
             <if test="deleteFlag != null">
                 #{deleteFlag,jdbcType=INTEGER},
             </if>
+            <if test="enableFlag != null">
+                #{enableFlag,jdbcType=INTEGER},
+            </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -95,6 +102,9 @@
             <if test="deleteFlag != null">
                 delete_flag = #{deleteFlag,jdbcType=INTEGER},
             </if>
+            <if test="enableFlag != null">
+                enable_flag = #{enableFlag,jdbcType=INTEGER},
+            </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -111,6 +121,7 @@
         update project_info
         set project_name = #{projectName,jdbcType=VARCHAR},
             delete_flag  = #{deleteFlag,jdbcType=INTEGER},
+            enable_flag  = #{enableFlag,jdbcType=INTEGER},
             create_time  = #{createTime,jdbcType=TIMESTAMP},
             update_time  = #{updateTime,jdbcType=TIMESTAMP},
             env_id  = #{envId,jdbcType=INTEGER}

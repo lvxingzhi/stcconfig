@@ -20,10 +20,16 @@ public class EnvInfoDO {
     private String envName;
 
     /**
-     * 0 有效 1 失效
+     * 0 未删除 1 已删除
      * 表字段: delete_flag
      */
     private Integer deleteFlag;
+
+    /**
+     * 0 有效 1 失效
+     * 表字段: delete_flag
+     */
+    private Integer enableFlag;
 
     /**
      * 创建时间

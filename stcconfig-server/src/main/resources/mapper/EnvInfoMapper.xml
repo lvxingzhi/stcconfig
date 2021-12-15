@@ -5,12 +5,13 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="env_name" property="envName" jdbcType="VARCHAR" />
     <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+    <result column="enable_flag" property="enableFlag" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, env_name, delete_flag, create_time, update_time, parent_id
+    id, env_name, delete_flag, enable_flag, create_time, update_time, parent_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 'true' as QUERYID,
@@ -30,9 +31,9 @@
     from env_info
   </select>
   <insert id="insert" parameterType="cn.notenextday.stcconfigserver.dto.entity.EnvInfoDO"  useGeneratedKeys="true" keyProperty="id">
-    insert into env_info (id, env_name, delete_flag, 
+    insert into env_info (id, env_name, delete_flag, enable_flag,
       create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{envName,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{envName,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=INTEGER}, #{enableFlag,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{parentId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cn.notenextday.stcconfigserver.dto.entity.EnvInfoDO"  useGeneratedKeys="true" keyProperty="id">
@@ -46,6 +47,9 @@
       </if>
       <if test="deleteFlag != null" >
         delete_flag,
+      </if>
+      <if test="enableFlag != null" >
+        enable_flag,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -67,6 +71,9 @@
       <if test="deleteFlag != null" >
         #{deleteFlag,jdbcType=INTEGER},
       </if>
+      <if test="enableFlag != null" >
+        #{enableFlag,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -87,6 +94,9 @@
       <if test="deleteFlag != null" >
         delete_flag = #{deleteFlag,jdbcType=INTEGER},
       </if>
+      <if test="enableFlag != null" >
+        enable_flag = #{enableFlag,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -103,6 +113,7 @@
     update env_info
     set env_name = #{envName,jdbcType=VARCHAR},
       delete_flag = #{deleteFlag,jdbcType=INTEGER},
+      enable_flag = #{enableFlag,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       parent_id = #{parentId,jdbcType=INTEGER}

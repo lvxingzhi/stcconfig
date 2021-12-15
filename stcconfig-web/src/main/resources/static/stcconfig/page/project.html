@@ -77,8 +77,8 @@
                 {field: 'envId', minWidth: 100, title: '环境ID', sort: true},
                 {field: 'projectName', width: 120, title: '项目名称'},
                 {
-                    field: 'deleteFlag', width: 100, title: '状态', templet: function (d) {
-                        if (d && d.deleteFlag == 0) {
+                    field: 'enableFlag', width: 100, title: '状态', templet: function (d) {
+                        if (d && d.enableFlag == 0) {
                             return '生效'
                         } else {
                             return '失效'
@@ -123,10 +123,14 @@
                         //找到它的子窗口的body
                         var body = layer.getChildFrame('body', index);
                         //为子窗口元素赋值
-                        body.find("input[name='id']").val(obj.data.id);
-                        body.find("input[name='envId']").val(obj.data.envId);
-                        body.find("input[name='projectName']").val(obj.data.projectName);
-                        body.find("input:radio[value='" + obj.data.deleteFlag + "']").attr('checked', 'true');
+                        let iframeWin = window[layero.find('iframe')[0]['name']];
+                        let data = {
+                            "id": obj.data.id
+                            , "envId": obj.data.envId
+                            , "projectName": obj.data.projectName
+                            , "enableFlag": obj.data.enableFlag
+                        };
+                        iframeWin.initData(data);
                     }
                 });
             } else if (obj.event === 'delete') {  // 监听添加操作

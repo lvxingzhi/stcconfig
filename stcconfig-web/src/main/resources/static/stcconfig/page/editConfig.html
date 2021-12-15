@@ -15,7 +15,7 @@
     </style>
 </head>
 <body>
-<div class="layui-form layuimini-form">
+<div class="layui-form layuimini-form" lay-filter="editConfigForm">
     <input type="hidden" name="id"/>
     <div class="layui-form-item">
         <label class="layui-form-label required">环境ID</label>
@@ -67,8 +67,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">状态</label>
         <div class="layui-input-block">
-            <input type="radio" name="deleteFlag" value="0" title="有效">
-            <input type="radio" name="deleteFlag" value="1" title="无效">
+            <input type="radio" name="enableFlag" value="0" title="有效">
+            <input type="radio" name="enableFlag" value="1" title="无效">
         </div>
     </div>
     <div class="layui-form-item">
@@ -107,6 +107,11 @@
             return false;
         });
     });
+
+    // 初始化数据
+    function initData(value) {
+        layui.form.val("editConfigForm", value);
+    }
 
 </script>
 </body>

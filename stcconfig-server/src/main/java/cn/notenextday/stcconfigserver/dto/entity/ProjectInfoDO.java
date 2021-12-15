@@ -32,6 +32,12 @@ public class ProjectInfoDO {
      * 0 有效 1 失效
      * 表字段: delete_flag
      */
+    private Integer enableFlag;
+
+    /**
+     * 0 未删除 1 已删除
+     * 表字段: delete_flag
+     */
     private Integer deleteFlag;
 
     /**
