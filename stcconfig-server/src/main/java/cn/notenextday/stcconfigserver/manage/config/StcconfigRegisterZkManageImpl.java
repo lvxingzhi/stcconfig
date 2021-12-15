@@ -163,7 +163,7 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
             for (NodeDTO zkProNodeDTO : zkProjectNodeList) {
                 if (CollectionUtils.isEmpty(getEnvProjectMap().get(Integer.parseInt(zkEnvNodeDTO.getData())).stream().filter(s -> s.getId().equals(Integer.parseInt(zkProNodeDTO.getData()))).collect(Collectors.toList()))) {
                     // 删除ZK项目
-                    ZookeeperClientUtil.deleteNode(zkEnvNodeDTO.getPath() + NodePathContant.PROJECT_PATH + NodePathContant.PATH_SUB + zkProNodeDTO.getPath());
+                    ZookeeperClientUtil.deleteNode(zkProNodeDTO.getPath());
                 }
 
                 // 获取ZK配置列表

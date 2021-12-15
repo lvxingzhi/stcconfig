@@ -65,8 +65,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">状态</label>
         <div class="layui-input-block">
-            <input type="radio" name="enableFlag" value="0" title="有效" checked="">
-            <input type="radio" name="enableFlag" value="1" title="无效">
+            <input type="radio" name="disableFlag" value="0" title="有效" checked="">
+            <input type="radio" name="disableFlag" value="1" title="无效">
         </div>
     </div>
     <div class="layui-form-item">
@@ -93,8 +93,8 @@
                 headers: {'Content-Type': 'application/json;charset=utf-8'}, //接口json格式
                 success: function (data) {
                     // 关闭弹出层
-                    layer.close(index);
                     var iframeIndex = parent.layer.getFrameIndex(window.name);
+                    debugger
                     parent.layer.close(iframeIndex);
                 },
                 error: function (data) {

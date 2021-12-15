@@ -77,8 +77,8 @@
                 {field: 'configFileVersion', width: 150, title: '配置文件版本号'},
                 {field: 'configFileVersionPrevious', width: 200, title: '配置文件上一版本号', sort: true},
                 {
-                    field: 'enableFlag', width: 100, title: '状态', templet: function (d) {
-                        if (d && d.enableFlag == 0) {
+                    field: 'disableFlag', width: 100, title: '状态', templet: function (d) {
+                        if (d && d.disableFlag == 0) {
                             return '生效'
                         } else {
                             return '失效'
@@ -159,7 +159,7 @@
                             , "configFileName": obj.data.configFileName
                             , "configFileContent": obj.data.configFileContent
                             , "configIndex": obj.data.configIndex
-                            , "enableFlag": obj.data.enableFlag
+                            , "disableFlag": obj.data.disableFlag
                         };
                         iframeWin.initData(data);
                     }

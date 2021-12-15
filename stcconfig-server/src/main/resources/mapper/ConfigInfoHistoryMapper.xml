@@ -12,7 +12,7 @@
     <result column="config_index" property="configIndex" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
-    <result column="enable_flag" property="enableFlag" jdbcType="INTEGER" />
+    <result column="disable_flag" property="disableFlag" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -21,7 +21,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, config_type, config_file_name, config_file_type, config_file_version, config_file_version_previous, 
-    config_file_version_next, config_index, project_id, delete_flag, enable_flag, create_time, update_time
+    config_file_version_next, config_index, project_id, delete_flag, disable_flag, create_time, update_time
   </sql>
   <sql id="Blob_Column_List" >
     config_file_content
@@ -37,13 +37,13 @@
   <insert id="insert" parameterType="cn.notenextday.stcconfigserver.dto.entity.ConfigInfoHistoryDO" >
     insert into config_info_history (id, config_type, config_file_name, 
       config_file_type, config_file_version, config_file_version_previous, 
-      config_file_version_next, config_index, project_id, delete_flag, enable_flag,
+      config_file_version_next, config_index, project_id, delete_flag, disable_flag,
       create_time, update_time, config_file_content
       )
     values (#{id,jdbcType=INTEGER}, #{configType,jdbcType=VARCHAR}, #{configFileName,jdbcType=VARCHAR}, 
       #{configFileType,jdbcType=VARCHAR}, #{configFileVersion,jdbcType=INTEGER}, #{configFileVersionPrevious,jdbcType=INTEGER},
       #{configFileVersionNext,jdbcType=INTEGER}, #{configIndex,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER},
-            #{deleteFlag,jdbcType=INTEGER}, #{enableFlag,jdbcType=INTEGER},
+            #{deleteFlag,jdbcType=INTEGER}, #{disableFlag,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{configFileContent,jdbcType=LONGVARCHAR}
       )
   </insert>
@@ -80,8 +80,8 @@
       <if test="deleteFlag != null" >
         delete_flag,
       </if>
-      <if test="enableFlag != null" >
-        enable_flag,
+      <if test="disableFlag != null" >
+        disable_flag,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -124,8 +124,8 @@
       <if test="deleteFlag != null" >
         #{deleteFlag,jdbcType=INTEGER},
       </if>
-      <if test="enableFlag != null" >
-        #{enableFlag,jdbcType=INTEGER},
+      <if test="disableFlag != null" >
+        #{disableFlag,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -168,8 +168,8 @@
       <if test="deleteFlag != null" >
         delete_flag = #{deleteFlag,jdbcType=INTEGER},
       </if>
-      <if test="enableFlag != null" >
-        enable_flag = #{enableFlag,jdbcType=INTEGER},
+      <if test="disableFlag != null" >
+        disable_flag = #{disableFlag,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -194,7 +194,7 @@
       config_index = #{configIndex,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
       delete_flag = #{deleteFlag,jdbcType=INTEGER},
-      enable_flag = #{enableFlag,jdbcType=INTEGER},
+      disable_flag = #{disableFlag,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       config_file_content = #{configFileContent,jdbcType=LONGVARCHAR}
@@ -211,7 +211,7 @@
       config_index = #{configIndex,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
       delete_flag = #{deleteFlag,jdbcType=INTEGER},
-      enable_flag = #{enableFlag,jdbcType=INTEGER},
+      disable_flag = #{disableFlag,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

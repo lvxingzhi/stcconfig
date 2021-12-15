@@ -5,6 +5,7 @@ import cn.notenextday.stcconfigserver.dto.NodeDTO;
 import cn.notenextday.stcconfigserver.watcher.ConnectedWatcher;
 import com.alibaba.fastjson.JSON;
 import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
@@ -112,9 +113,27 @@ public class ZookeeperClientUtil {
     public static void deleteNode(String path) {
         try {
             waitUntilConnected(zookeeper);
-            zookeeper.delete(path, zookeeper.exists(path, false).getVersion());
+            deleteSubNode(path);
+//            zookeeper.delete(path, zookeeper.exists(path, false).getVersion());
         } catch (Exception e) {
             logger.error("[zookeeper] 删除节点异常", e);
+        }
+    }
+
+    public static void deleteSubNode(String nodeStr) throws IOException, KeeperException, InterruptedException {
+        String nodePath = nodeStr;
+        //打印当前节点路径
+        System.out.println("Node Path >>>>>>>>> [" + nodePath + " ]");
+        if (zookeeper.getChildren(nodePath, false).size() == 0) {
+            //删除节点
+            System.out.println("Deleting Node Path >>>>>>>>> [" + nodePath + " ]");
+            zookeeper.delete(nodePath,zookeeper.exists(nodePath, false).getVersion());
+        } else {
+            //递归查找非空子节点
+            List<String> list = zookeeper.getChildren(nodeStr, true);
+            for (String str : list) {
+                deleteSubNode(nodePath + "/" + str);
+            }
         }
     }
 

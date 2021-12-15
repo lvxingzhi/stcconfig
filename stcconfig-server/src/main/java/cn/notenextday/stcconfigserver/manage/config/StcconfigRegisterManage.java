@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,15 +51,18 @@ public abstract class StcconfigRegisterManage implements CommandLineRunner {
         for (EnvInfoDO envInfoDO : envInfoDOList) {
             List<ProjectInfoDO> projectInfoDOList = projectInfoService.findListByEnvId(envInfoDO.getId());
             if (CollectionUtils.isEmpty(projectInfoDOList)) {
+                envProjectMap.put(envInfoDO.getId(), new ArrayList<>());
                 continue;
             }
             envProjectMap.put(envInfoDO.getId(), projectInfoDOList);
             for (ProjectInfoDO projectInfoDO : projectInfoDOList) {
                 // 查询DB配置
                 List<ConfigInfoDO> configInfoDOList = configInfoService.findListByProjectId(projectInfoDO.getId());
-                if (!CollectionUtils.isEmpty(configInfoDOList)) {
-                    proConfigMap.put(projectInfoDO.getId(), configInfoDOList);
+                if (CollectionUtils.isEmpty(configInfoDOList)) {
+                    configInfoDOList = new ArrayList<>();
                 }
+                proConfigMap.put(projectInfoDO.getId(), configInfoDOList);
+
             }
         }// 构建节点树
         buildNodes();

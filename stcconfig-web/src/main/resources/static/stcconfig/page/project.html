@@ -77,8 +77,8 @@
                 {field: 'envId', minWidth: 100, title: '环境ID', sort: true},
                 {field: 'projectName', width: 120, title: '项目名称'},
                 {
-                    field: 'enableFlag', width: 100, title: '状态', templet: function (d) {
-                        if (d && d.enableFlag == 0) {
+                    field: 'disableFlag', width: 100, title: '状态', templet: function (d) {
+                        if (d && d.disableFlag == 0) {
                             return '生效'
                         } else {
                             return '失效'
@@ -128,7 +128,7 @@
                             "id": obj.data.id
                             , "envId": obj.data.envId
                             , "projectName": obj.data.projectName
-                            , "enableFlag": obj.data.enableFlag
+                            , "disableFlag": obj.data.disableFlag
                         };
                         iframeWin.initData(data);
                     }
