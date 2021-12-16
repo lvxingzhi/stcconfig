@@ -34,7 +34,7 @@ public class FileReadToTypeUtil {
             yaml.setResources(new ClassPathResource(filePath));
             return yaml.getObject();
         } catch (Exception e) {
-            logger.error("[stcconfig][client] yaml读取配置文件失败");
+            logger.error("[stcconfig][client] yaml读取配置文件失败", e);
         }
         return new HashMap<>();
     }

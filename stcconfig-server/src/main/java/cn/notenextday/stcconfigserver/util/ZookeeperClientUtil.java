@@ -34,6 +34,10 @@ import java.util.concurrent.CountDownLatch;
  * @Date 2021/7/27 11:19
  */
 public class ZookeeperClientUtil {
+
+    private static final String ZK_URL = "127.0.0.1:2181";
+    private static final int SESSION_TIME_OUT = 155000;
+
     private ZookeeperClientUtil() {
     }
 
@@ -156,10 +160,10 @@ public class ZookeeperClientUtil {
             if (Objects.nonNull(zookeeper) && zookeeper.getState().isAlive()) {
                 return;
             }
-            zookeeper = new ZooKeeper("127.0.0.1:2181", 155000, watchedEvent -> {
+            zookeeper = new ZooKeeper(ZK_URL, SESSION_TIME_OUT, watchedEvent -> {
                 // 监听节点事件, 监听连接事件
                 if (Watcher.Event.KeeperState.SyncConnected.equals(watchedEvent.getState())) {
-                    logger.info("[stcconfig][server][zookeeper]服务连接成功");
+//                    logger.info("[stcconfig][server][zookeeper]服务连接成功");
                 }
             });
         } catch (IOException e) {
@@ -177,12 +181,20 @@ public class ZookeeperClientUtil {
     }
 
     public static void waitUntilConnected(ZooKeeper zooKeeper) {
-        CountDownLatch connectedLatch = new CountDownLatch(1);
-        Watcher watcher = new ConnectedWatcher(connectedLatch);
-        zooKeeper.register(watcher);
+//        CountDownLatch connectedLatch = new CountDownLatch(1);
+//        Watcher watcher = new ConnectedWatcher(connectedLatch);
+//        zooKeeper.register(watcher);
+//        if (ZooKeeper.States.CONNECTING == zooKeeper.getState()) {
+//            try {
+//                connectedLatch.await();
+//            } catch (InterruptedException e) {
+//                throw new IllegalStateException(e);
+//            }
+//        }
         if (ZooKeeper.States.CONNECTING == zooKeeper.getState()) {
             try {
-                connectedLatch.await();
+                Thread.sleep(3000);
+                waitUntilConnected(zooKeeper);
             } catch (InterruptedException e) {
                 throw new IllegalStateException(e);
             }

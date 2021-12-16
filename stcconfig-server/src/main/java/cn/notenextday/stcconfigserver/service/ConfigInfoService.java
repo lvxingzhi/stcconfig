@@ -47,7 +47,7 @@ public class ConfigInfoService {
      * 修改
      */
     public Integer update(ConfigInfoDO configInfoDO) {
-        return configInfoDao.updateByPrimaryKeyWithBLOBs(configInfoDO);
+        return configInfoDao.updateByPrimaryKeySelective(configInfoDO);
     }
 
     /**

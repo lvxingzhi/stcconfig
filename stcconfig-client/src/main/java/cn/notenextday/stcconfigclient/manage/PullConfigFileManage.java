@@ -17,20 +17,15 @@ import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.YamlMapFactoryBean;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +43,7 @@ import java.util.Objects;
 @Service
 public class PullConfigFileManage implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(PullConfigFileManage.class);
-    private String STCCONFIG_FILE_PATH_DEFAULT = this.getClass().getResource("/").getPath() + "stcconfig" + "/";
-    private String stcconfigFilePath = STCCONFIG_FILE_PATH_DEFAULT;
+    private String stcconfigFilePath;
     @Value("${server.stcconfig.envId}")
     private Integer envId;
     @Value("${server.stcconfig.projectId}")
@@ -58,6 +52,7 @@ public class PullConfigFileManage implements CommandLineRunner {
     private String zookeeperUrl;
     @Value("${server.stcconfig.directory}")
     private String directory;
+    private static final String DEFAULT_DIRECTORY = "stcconfig";
     @Resource
     private PullConfigFileManage pullConfigFileManage;
     @Resource
@@ -114,7 +109,7 @@ public class PullConfigFileManage implements CommandLineRunner {
                 File localTmpFile = new File(stcconfigFilePath + nodeDTO.getFileName());
                 FileUtils.copyURLToFile(remoteUrl, localTmpFile);
                 int pointIndex = nodeDTO.getFileName().indexOf(".");
-                ConfigFileTypeEnum configFileTypeEnum = ConfigFileTypeEnum.getEnumByName(nodeDTO.getFileName().substring(pointIndex));
+                ConfigFileTypeEnum configFileTypeEnum = ConfigFileTypeEnum.getEnumByName(nodeDTO.getFileName().substring(pointIndex + 1));
                 if (Objects.isNull(configFileTypeEnum)) {
                     logger.error("[stcconfig][client]文件解析失败,不支持该类型:{}{}", stcconfigFilePath, nodeDTO.getFileName());
                     continue;
@@ -122,7 +117,7 @@ public class PullConfigFileManage implements CommandLineRunner {
                 // 读取配置文件内容到配置容器
                 Map<String, Object> dataMap = new HashMap<>();
                 if (ConfigFileTypeEnum.YAML.equals(configFileTypeEnum)) {
-                    dataMap = FileReadToTypeUtil.yaml2Map(stcconfigFilePath + nodeDTO.getFileName());
+                    dataMap = FileReadToTypeUtil.yaml2Map(directory + "/" + nodeDTO.getFileName());
                 }
                 if (ConfigFileTypeEnum.PROPERTIES.equals(configFileTypeEnum)) {
                     dataMap = FileReadToTypeUtil.properties2Map(stcconfigFilePath + nodeDTO.getFileName());
@@ -133,7 +128,7 @@ public class PullConfigFileManage implements CommandLineRunner {
                 ConfigContainer.container().getDataMap().put(nodeDTO.getFileName(), dataMap);
             }
         } catch (IOException e) {
-            logger.error("[stcconfig][client] 请求服务器拉取配置文件失败");
+            logger.error("[stcconfig][client] 请求服务器拉取配置文件失败", e);
         }
     }
 
@@ -146,11 +141,11 @@ public class PullConfigFileManage implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         ZookeeperClientUtil.init(zookeeperUrl);
-        if (!Strings.isEmpty(directory)) {
-            stcconfigFilePath = this.getClass().getResource("/").getPath() + directory + "/";
+        if (Strings.isEmpty(directory)) {
+            directory = DEFAULT_DIRECTORY;
         }
+        stcconfigFilePath = this.getClass().getResource("/").getPath() + directory + "/";
         this.init();
     }
-
 
 }

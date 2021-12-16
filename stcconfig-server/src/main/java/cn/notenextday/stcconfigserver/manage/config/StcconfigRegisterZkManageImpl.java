@@ -228,7 +228,7 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
                                 if (!zkConfigNodeDTO.getVersion().equals(dbConfigInfoDO.getConfigFileVersion())) {
                                     // 更新为最新
                                     String zkConfigNodePath = getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), dbConfigInfoDO.getId());
-                                    ZookeeperClientUtil.modifyNode(zkConfigNodePath, JSON.toJSONBytes(new NodeDTO(zkConfigNodePath, dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion())));
+                                    ZookeeperClientUtil.modifyNode(zkConfigNodePath, JSON.toJSONBytes(new NodeDTO(HttpConstant.getUrl(stcconfigUrl, stcconfigPort, zkConfigNodePath), dbConfigInfoDO.getId(), dbConfigInfoDO.getConfigFileVersion(), dbConfigInfoDO.getConfigFileName())));
                                 }
                             }
                         }
@@ -237,6 +237,7 @@ public class StcconfigRegisterZkManageImpl extends StcconfigRegisterManage {
                 // 项目版本更新, 客户端监听项目版本
                 NodeDTO nodeDTO = ZookeeperClientUtil.getNode(getZkPathValue(dbEnvId, dbProjectInfoDO.getId(), null), null);
                 nodeDTO.setVersion(incrementVersion(nodeDTO.getVersion()));
+                ZookeeperClientUtil.modifyNode(nodeDTO.getPath(), JSON.toJSONBytes(nodeDTO));
             }
         }
     }

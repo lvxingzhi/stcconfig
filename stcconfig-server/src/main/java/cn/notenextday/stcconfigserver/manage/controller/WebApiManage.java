@@ -181,7 +181,7 @@ public class WebApiManage {
         configInfoDO.setUpdateTime(new Date());
         configInfoDO.setConfigFileType(ConfigFileTypeEnum.getEnumByCode(TypeUtil.stringToInt(configInfoDO.getConfigType())).getName());
         Integer id = configInfoService.update(configInfoDO);
-        stcconfigRegisterManage.buildNodes();
+        stcconfigRegisterManage.init();
         return id;
     }
 

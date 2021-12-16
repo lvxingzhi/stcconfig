@@ -166,16 +166,24 @@ public class ZookeeperClientUtil {
      * @param zooKeeper
      */
     public static void waitUntilConnected(ZooKeeper zooKeeper) {
-        CountDownLatch connectedLatch = new CountDownLatch(1);
-        Watcher watcher = new ConnectedWatcher(connectedLatch);
-        // 注册监听
-        zooKeeper.register(watcher);
+//        CountDownLatch connectedLatch = new CountDownLatch(1);
+//        Watcher watcher = new ConnectedWatcher(connectedLatch);
+//        // 注册监听
+//        zooKeeper.register(watcher);
+//        if (ZooKeeper.States.CONNECTING == zooKeeper.getState()) {
+//            try {
+//                // 阻塞, 等待事件触发后的激活以继续执行
+//                connectedLatch.await();
+//            } catch (InterruptedException e) {
+//                logger.error("[zookeeper] 等待连接中异常", e);
+//            }
+//        }
         if (ZooKeeper.States.CONNECTING == zooKeeper.getState()) {
             try {
-                // 阻塞, 等待事件触发后的激活以继续执行
-                connectedLatch.await();
+                Thread.sleep(3000);
+                waitUntilConnected(zooKeeper);
             } catch (InterruptedException e) {
-                logger.error("[zookeeper] 等待连接中异常", e);
+                throw new IllegalStateException(e);
             }
         }
     }
