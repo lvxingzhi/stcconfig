@@ -49,7 +49,7 @@
         <table class="layui-hide" id="configTableId" lay-filter="configTableFilter"></table>
         <script type="text/html" id="lineTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">失效</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
     </div>
@@ -165,7 +165,7 @@
                     }
                 });
             } else if (obj.event === 'delete') {  // 监听添加操作
-                layer.confirm('失效确认', function (index) {
+                layer.confirm('删除确认', function (index) {
                     deleteConfig(obj.data.id);
                 });
             }
