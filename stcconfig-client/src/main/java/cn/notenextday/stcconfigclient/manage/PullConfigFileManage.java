@@ -67,7 +67,7 @@ public class PullConfigFileManage implements CommandLineRunner {
      * 配置文件初始化
      */
     public void init() {
-        // 增加监控
+        // 增加监控当前项目节点(当变化后当前方法被重新执行,节点重新被监控, 配置文件重新下载, 更新容器中的值, 不支持服务器删除配置文件, 需要重启后生效)
         if (!ZookeeperClientUtil.existsNode(NodePathContant.ENV_PATH_ALL + NodePathContant.PATH_SUB + envId + NodePathContant.PROJECT_PATH + NodePathContant.PATH_SUB + projectId, new NodeActionWatcher(pullConfigFileManage))) {
             logger.warn("[stcconfig][client]注册中心未找到配置节点,请检查");
             return;
